@@ -18,20 +18,17 @@ HasKeyword.relation = "rdfs:label"
 HasKeyword.language = "en"
 
 
+
 class IsPerson(FixedType):
     fixedtype = "foaf:Person"
 
 
-class IsPlace(FixedType):
-    fixedtype = "dbpedia:Place"
+# class IsPlace(FixedType):
+#     fixedtype = "dbpedia:Place"
 
 
-class IsCountry(FixedType):
-    fixedtype = "dbpedia-owl:Country"
-
-
-class IsPopulatedPlace(FixedType):
-    fixedtype = "dbpedia-owl:PopulatedPlace"
+# class IsCountry(FixedType):
+#     fixedtype = "dbpedia-owl:Country"
 
 
 class IsBand(FixedType):
@@ -42,9 +39,9 @@ class IsAlbum(FixedType):
     fixedtype = "dbpedia-owl:Album"
 
 
-class HasName(FixedDataRelation):
-    relation = "dbpprop:name"
-    language = "en"
+# class HasName(FixedDataRelation):
+#     relation = "dbpprop:name"
+#     language = "en"
 
 
 class DefinitionOf(FixedRelation):
@@ -57,34 +54,10 @@ class LabelOf(FixedRelation):
     reverse = True
 
 
-class UTCof(FixedRelation):
-    relation = "dbpprop:utcOffset"
-    reverse = True
+# class LanguageOf(FixedRelation):
+#     relation = "dbpprop:officialLanguages"
+#     reverse = True
 
-
-class PresidentOf(FixedRelation):
-    relation = "dbpprop:leaderTitle"
-    reverse = True
-
-
-class IncumbentOf(FixedRelation):
-    relation = "dbpprop:incumbent"
-    reverse = True
-
-
-class CapitalOf(FixedRelation):
-    relation = "dbpedia-owl:capital"
-    reverse = True
-
-
-class LanguageOf(FixedRelation):
-    relation = "dbpprop:officialLanguages"
-    reverse = True
-
-
-class PopulationOf(FixedRelation):
-    relation = "dbpprop:populationCensus"
-    reverse = True
 
 
 class IsMemberOf(FixedRelation):
@@ -116,29 +89,23 @@ class BirthPlaceOf(FixedRelation):
     reverse = True
 
 
-class ReleaseDateOf(FixedRelation):
-    relation = "dbpedia-owl:releaseDate"
-    reverse = True
+# class ReleaseDateOf(FixedRelation):
+#     relation = "dbpedia-owl:releaseDate"
+#     reverse = True
 
 
-class StarsIn(FixedRelation):
-    relation = "dbpprop:starring"
-    reverse = True
+# class ShowNameOf(FixedRelation):
+#     relation = "dbpprop:showName"
+#     reverse = True
 
 
-
-class ShowNameOf(FixedRelation):
-    relation = "dbpprop:showName"
-    reverse = True
+# class HasActor(FixedRelation):
+#     relation = "dbpprop:starring"
 
 
-class HasActor(FixedRelation):
-    relation = "dbpprop:starring"
-
-
-class CreatorOf(FixedRelation):
-    relation = "dbpprop:creator"
-    reverse = True
+# class CreatorOf(FixedRelation):
+#     relation = "dbpprop:creator"
+#     reverse = True
 
 
 class NameOf(FixedRelation):
@@ -147,34 +114,26 @@ class NameOf(FixedRelation):
     reverse = True
 
 
-class DirectedBy(FixedRelation):
-    relation = "dbpedia-owl:director"
+# class DirectedBy(FixedRelation):
+#     relation = "dbpedia-owl:director"
 
 
-class DirectorOf(FixedRelation):
-    relation = "dbpedia-owl:director"
-    reverse = True
+# class DirectorOf(FixedRelation):
+#     relation = "dbpedia-owl:director"
+#     reverse = True
 
 
-class DurationOf(FixedRelation):
-    # DBpedia throws an error if the relation it's
-    # dbpedia-owl:Work/runtime so we expand the prefix
-    # by giving the whole URL.
-    relation = "<http://dbpedia.org/ontology/Work/runtime>"
-    reverse = True
+# class HasAuthor(FixedRelation):
+#     relation = "dbpedia-owl:author"
 
 
-class HasAuthor(FixedRelation):
-    relation = "dbpedia-owl:author"
-
-
-class AuthorOf(FixedRelation):
-    relation = "dbpedia-owl:author"
-    reverse = True
+# class AuthorOf(FixedRelation):
+#     relation = "dbpedia-owl:author"
+#     reverse = True
 
 
 
 
-class LocationOf(FixedRelation):
-    relation = "dbpedia-owl:location"
-    reverse = True
+# class LocationOf(FixedRelation):
+#     relation = "dbpedia-owl:location"
+#     reverse = True

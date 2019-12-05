@@ -34,8 +34,8 @@ def print_define(results, target, metadata=None):
 
 
 def print_enum(results, target, metadata=None):
-    print("--------------------------------------------------Person Print")
     used_labels = []
+    print results["results"]["bindings"]
 
     for result in results["results"]["bindings"]:
         if result[target]["type"] == u"literal":
@@ -55,50 +55,6 @@ def print_literal(results, target, metadata=None):
             print literal
 
 
-def print_time(results, target, metadata=None):
-    gmt = time.mktime(time.gmtime())
-    gmt = datetime.datetime.fromtimestamp(gmt)
-
-    for result in results["results"]["bindings"]:
-        offset = result[target]["value"].replace(u"−", u"-")
-
-        if ("to" in offset) or ("and" in offset):
-            if "to" in offset:
-                connector = "and"
-                from_offset, to_offset = offset.split("to")
-            else:
-                connector = "or"
-                from_offset, to_offset = offset.split("and")
-
-            from_offset, to_offset = int(from_offset), int(to_offset)
-
-            if from_offset > to_offset:
-                from_offset, to_offset = to_offset, from_offset
-
-            from_delta = datetime.timedelta(hours=from_offset)
-            to_delta = datetime.timedelta(hours=to_offset)
-
-            from_time = gmt + from_delta
-            to_time = gmt + to_delta
-
-            location_string = random.choice(["where you are",
-                                             "your location"])
-
-            print "Between %s %s %s, depending on %s" % \
-                  (from_time.strftime("%H:%M"),
-                   connector,
-                   to_time.strftime("%H:%M on %A"),
-                   location_string)
-
-        else:
-            offset = int(offset)
-
-            delta = datetime.timedelta(hours=offset)
-            the_time = gmt + delta
-
-            print the_time.strftime("%H:%M on %A")
-
-
 def print_age(results, target, metadata=None):
     assert len(results["results"]["bindings"]) == 1
 
@@ -116,23 +72,7 @@ def print_age(results, target, metadata=None):
 
 
 if __name__ == "__main__":
-    default_questions = [
-        "What is a car?",
-        "Who is Tom Cruise?",
-        "Who is George Lucas?",
-        "Who is Mirtha Legrand?",
-        # "List Microsoft software",
-        "Name Fiat cars",
-        "time in argentina",
-        "what time is it in Chile?",
-        "List movies directed by Martin Scorsese",
-        "How long is Pulp Fiction",
-        "which movies did Mel Gibson starred?",
-        "When was Gladiator released?",
-        "who directed Pocahontas?",
-        "actors of Fight Club",
-    ]
-
+   
     if "-d" in sys.argv:
         quepy.set_loglevel("DEBUG")
         sys.argv.remove("-d")
@@ -141,7 +81,8 @@ if __name__ == "__main__":
         question = " ".join(sys.argv[1:])
         questions = [question]
     else:
-        questions = default_questions
+        print("You have to give me a question my dude!")
+        sys.exit()
 
     print_handlers = {
         "define": print_define,

@@ -14,7 +14,6 @@ DBpedia quepy.
 
 from music import *
 
-from people import *
 
 
 

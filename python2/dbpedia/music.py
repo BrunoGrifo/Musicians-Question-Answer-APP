@@ -27,7 +27,6 @@ class Band(Particle):
 
 
 class BandMembersQuestion(QuestionTemplate):
-    print("--------------------------------------------------Members Template")
 
     """
     Regex for questions about band member.
@@ -100,7 +99,6 @@ class AlbumsOfQuestion(QuestionTemplate):
 
 
 class Person(Particle):
-    print("--------------------------------------------------Person Particle")
     regex = Plus(Pos("NN") | Pos("NNS") | Pos("NNP") | Pos("NNPS"))
 
     def interpret(self, match):
@@ -112,9 +110,6 @@ class WhoIs(QuestionTemplate):
     """
     Ex: "Who is Tom Cruise?"
     """
-
-    print("--------------------------------------------------Person Question Template")
-
     regex = Lemma("who") + Lemma("be") + Person() + Question(Pos("."))
 
     def interpret(self, match):
