@@ -87,7 +87,6 @@ if __name__ == "__main__":
     print_handlers = {
         "define": print_define,
         "enum": print_enum,
-        "time": print_time,
         "literal": print_literal,
         "age": print_age,
     }
@@ -95,11 +94,7 @@ if __name__ == "__main__":
     for question in questions:
         print question
         print "-" * len(question)
-
-        print("--------------------------------------------------Person Before")
-
         target, query, metadata = dbpedia.get_query(question)
-        print("--------------------------------------------------Person After")
 
         if isinstance(metadata, tuple):
             query_type = metadata[0]
@@ -113,21 +108,33 @@ if __name__ == "__main__":
         if query is None:
             print "Query not generated :(\n"
             continue
-
+        """
+        print("---------")
         print query
-
+        print("---------")
+        print(metadata)
+        print("---------")
+        """
         if target.startswith("?"):
-            print("--------------------------------------------------Entrou")
             target = target[1:]
         if query:
-            print("--------------------------------------------------Entrou2")
             sparql.setQuery(query)
             sparql.setReturnFormat(JSON)
             results = sparql.query().convert()
+            
 
             if not results["results"]["bindings"]:
                 print "No answer found :("
                 continue
-        print("--------------------------------------------------Handler")
+
+        """
+        print("--------------------------------------------------Entrou")
+        print(results)
+        print("---------")
+        print(target)
+        print("---------")
+        print(metadata)
+        print("--------------------------------------------------Entrou2")
+        """
         print_handlers[query_type](results, target, metadata)
         print

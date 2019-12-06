@@ -54,6 +54,8 @@ class LabelOf(FixedRelation):
     reverse = True
 
 
+
+
 # class LanguageOf(FixedRelation):
 #     relation = "dbpprop:officialLanguages"
 #     reverse = True
@@ -77,6 +79,7 @@ class MusicGenreOf(FixedRelation):
 
 class ProducedBy(FixedRelation):
     relation = "dbpedia-owl:producer"
+
 
 
 class BirthDateOf(FixedRelation):
@@ -137,3 +140,12 @@ class NameOf(FixedRelation):
 # class LocationOf(FixedRelation):
 #     relation = "dbpedia-owl:location"
 #     reverse = True
+
+
+class ParentOf(FixedRelation):
+    relation = "dbpedia-owl:parent"
+    reverse = True
+
+class ChildOf(FixedRelation):
+    relation = "dbpedia-owl:child"
+    reverse = True

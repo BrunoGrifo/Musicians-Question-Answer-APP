@@ -15,7 +15,7 @@ from refo import Plus, Question
 from quepy.dsl import HasKeyword
 from quepy.parsing import Lemma, Lemmas, Pos, QuestionTemplate, Particle
 from dsl import IsBand, LabelOf, IsMemberOf, ActiveYears, MusicGenreOf, \
-    NameOf, IsAlbum, ProducedBy, DefinitionOf, IsPerson, BirthPlaceOf
+    NameOf, IsAlbum, ProducedBy, DefinitionOf, IsPerson, BirthPlaceOf, ParentOf, ChildOf
 
 
 class Band(Particle):
@@ -117,6 +117,7 @@ class WhoIs(QuestionTemplate):
         return definition, "define"
 
 
+
 class WhereIsFromQuestion(QuestionTemplate):
     """
     Ex: "Where is Bill Gates from?"
@@ -130,3 +131,25 @@ class WhereIsFromQuestion(QuestionTemplate):
         label = LabelOf(birth_place)
 
         return label, "enum"
+
+class ParentsOf(QuestionTemplate):
+    """
+    Ex: "Who are Liv Tyler parents?"
+    """
+    regex = Lemmas("who be") + Person() + Lemma("parent") + Question(Pos("."))
+    
+    def interpret(self, match):
+        parent = ParentOf(match.person)
+        label = LabelOf(parent)
+        return label, "define"
+
+class ChildrenOf(QuestionTemplate):
+    """
+    Ex: "Who are Liv Tyler parents?"
+    """
+    regex = Lemmas("who be") + Pos("DT") + (Lemma("son") | Lemma("child")) + Pos("IN") + Person() + Question(Pos("."))
+    
+    def interpret(self, match):
+        child= ChildOf(match.person)
+        label = LabelOf(child)
+        return label, "define"
