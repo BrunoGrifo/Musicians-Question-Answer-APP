@@ -108,13 +108,7 @@ if __name__ == "__main__":
         if query is None:
             print "Query not generated :(\n"
             continue
-        """
-        print("---------")
-        print query
-        print("---------")
-        print(metadata)
-        print("---------")
-        """
+
         if target.startswith("?"):
             target = target[1:]
         if query:
