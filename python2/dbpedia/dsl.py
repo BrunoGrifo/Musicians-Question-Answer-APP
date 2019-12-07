@@ -153,3 +153,19 @@ class ChildOf(FixedRelation):
 class GenreOf(FixedRelation):
     relation = "dbpedia-owl:genre"
     reverse = True
+
+class BirthNameOf(FixedRelation):
+    relation = "dbpedia-owl:birthName"
+    reverse = True
+
+class InstrumentOf(FixedRelation):
+    relation = "dbpprop:instrument"
+    reverse = True
+
+class OccupationOf(FixedRelation):
+    relation = "dbpedia-owl:occupation"
+    reverse = True
+
+class BirthDateOf(FixedRelation):
+    relation = "dbpedia-owl:birthDate"
+    reverse = True

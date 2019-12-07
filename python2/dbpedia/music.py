@@ -15,7 +15,8 @@ from refo import Plus, Question
 from quepy.dsl import HasKeyword
 from quepy.parsing import Lemma, Lemmas, Pos, QuestionTemplate, Particle
 from dsl import IsBand, LabelOf, IsMemberOf, ActiveYears, MusicGenreOf, \
-    NameOf, IsAlbum, ProducedBy, DefinitionOf, IsPerson, BirthPlaceOf, ParentOf, ChildOf, GenreOf
+    NameOf, IsAlbum, ProducedBy, DefinitionOf, IsPerson, BirthPlaceOf, ParentOf, ChildOf, GenreOf, BirthNameOf, \
+    InstrumentOf, OccupationOf, BirthDateOf
 
 
 class Band(Particle):
@@ -118,12 +119,13 @@ class WhoIs(QuestionTemplate):
 
 
 
-class WhereIsFromQuestion(QuestionTemplate):
+class WhereIsFromQuestion(QuestionTemplate): #______________________O GRIFO FEZ ESTA MERDA MAL
     """
     Ex: "Where is Bill Gates from?"
+    Ex: "Where was Whitney Houston born?
     """
 
-    regex = Lemmas("where be") + Person() + Lemma("from") + \
+    regex = Lemmas("where be") + Person() + (Lemma("from") | Lemma("born")) + \
         Question(Pos("."))
 
     def interpret(self, match):
@@ -132,12 +134,13 @@ class WhereIsFromQuestion(QuestionTemplate):
 
         return label, "enum"
 
+
 class ParentsOf(QuestionTemplate):
     """
     Ex: "Who are Liv Tyler parents?"
     """
-    regex1 = Lemmas("who be") + Person() + Lemma("parent") + Question(Pos("."))
-    regex2 = Lemmas("who be") + Person() + (Pos("POS") + Pos("NN")) + Lemma("parent") + Question(Pos("."))
+    regex1 = Lemmas("who be") + Person() + Question((Pos("POS") + Pos("NN"))) + Lemma("parent") + Question(Pos("."))
+    regex2 = Lemmas("who be") + Pos("DT") + Lemma("parent") + Pos("IN") + Person() + Question(Pos("."))
     regex = regex1 | regex2
 
     def interpret(self, match):
@@ -150,21 +153,64 @@ class ChildrenOf(QuestionTemplate):
     """
     Ex: "Who are the sons of Steven Tyler?"
     """
-    regex = Lemmas("who be") + Pos("DT") + (Lemma("son") | Lemma("child")) + Pos("IN") + Person() + Question(Pos("."))
+    regex1 = Lemmas("who be") + Person() + Question((Pos("POS") + Pos("NN"))) + (
+                Lemma("son") | Lemma("child")) + Question(Pos("."))
+    regex2 = Lemmas("who be") + Pos("DT") + (Lemma("son") | Lemma("child")) + Pos("IN") + Person() + Question(Pos("."))
+    regex = regex1 | regex2
 
     def interpret(self, match):
         child = ChildOf(match.person)
         label = LabelOf(child)
         return label, "define"
 
-class GenreOf(QuestionTemplate):
+class GenresOf(QuestionTemplate):  # --------------------------- O GRIFO FEZ ESTA MERDA MAL
     """
     Ex: What are the music genres of Michael Jackson?
     """
-    regex = (Lemmas("who be") | Lemma("list")) + Pos("DT") + (Lemmas("music genre") | Lemma("genre")) + Pos("IN") +\
+    regex = Lemma("what be") + Pos("DT") + (Lemmas("music genre") | Lemma("genre")) + Pos("IN") +\
             Person() + Question(Pos("."))
 
     def interpret(self, match):
         genre= GenreOf(match.person)
         label = LabelOf(genre)
         return label, "enum"
+
+class BirthNamesOf(QuestionTemplate):
+    """
+    Ex: What is the real name of Eminem?
+    """
+    regex = Lemmas("what be") + Pos("DT") + (Lemmas("real name") | Lemmas("birth name")) + Pos("IN") + Person() + Question(Pos("."))
+
+    def interpret(self, match):
+        birth = BirthNameOf(match.person)
+        return birth, "define"
+
+class InstrumentsOf(QuestionTemplate):
+    """
+    Ex: What instruments does Dave Grohl play?
+    """
+    regex = Lemmas("what instrument") + Question(Lemma("do")) + Person() + Lemma("play") + Question(Pos("."))
+
+    def interpret(self, match):
+        instrument = InstrumentOf(match.person)
+        return instrument,"literal"
+
+class OccupationsOf(QuestionTemplate):
+    """
+    Ex: What are the occupations of Jennifer Lopez?
+    """
+    regex = Lemmas("what be") + Pos("DT") + Lemma("occupation") + Pos("IN") + Person() + Question(Pos("."))
+
+    def interpret(self, match):
+        occupation = OccupationOf(match.person)
+        return occupation,"literal"
+
+class BirthDatesOf(QuestionTemplate):
+    """
+    Ex: When was Justin Bieber born?
+    """
+    regex = Lemmas("when be") + Person() + Lemma("bear") + Question(Pos("."))
+
+    def interpret(self, match):
+        birthdate = BirthDateOf(match.person)
+        return birthdate,"literal"

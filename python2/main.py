@@ -80,6 +80,7 @@ if __name__ == "__main__":
         question = " ".join(sys.argv[1:])
         questions = [question]
     else:
+        print quepy.nltktagger.run_nltktagger(u"When was Justion Bieber born?", nltk_data_path=None)
         print("You have to give me a question my dude!")
         sys.exit()
 
@@ -94,7 +95,7 @@ if __name__ == "__main__":
         print question
         print "-" * len(question)
         target, query, metadata = dbpedia.get_query(question)
-
+        print query
         if isinstance(metadata, tuple):
             query_type = metadata[0]
             metadata = metadata[1]
