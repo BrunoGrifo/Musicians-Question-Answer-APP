@@ -169,3 +169,19 @@ class OccupationOf(FixedRelation):
 class BirthDateOf(FixedRelation):
     relation = "dbpedia-owl:birthDate"
     reverse = True
+
+class ActivityPeriodEndOf(FixedRelation):
+    relation = "dbpedia-owl:activeYearsEndYear"
+    reverse = True
+
+class ActivityPeriodStartOf(FixedRelation):
+    relation = "dbpedia-owl:activeYearsStartYear"
+    reverse = True
+
+class CauseDeathOf(FixedRelation):
+    relation = "dbpedia-owl:deathCause"
+    reverse = True
+
+class DayDeathOf(FixedRelation):
+    relation = "dbpedia-owl:deathYear"
+    reverse = True

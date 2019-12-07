@@ -80,7 +80,7 @@ if __name__ == "__main__":
         question = " ".join(sys.argv[1:])
         questions = [question]
     else:
-        print quepy.nltktagger.run_nltktagger(u"When was Justion Bieber born?", nltk_data_path=None)
+        print quepy.nltktagger.run_nltktagger(u"What was the death day of Amy Winehouse?", nltk_data_path=None)
         print("You have to give me a question my dude!")
         sys.exit()
 

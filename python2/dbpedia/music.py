@@ -16,7 +16,7 @@ from quepy.dsl import HasKeyword
 from quepy.parsing import Lemma, Lemmas, Pos, QuestionTemplate, Particle
 from dsl import IsBand, LabelOf, IsMemberOf, ActiveYears, MusicGenreOf, \
     NameOf, IsAlbum, ProducedBy, DefinitionOf, IsPerson, BirthPlaceOf, ParentOf, ChildOf, GenreOf, BirthNameOf, \
-    InstrumentOf, OccupationOf, BirthDateOf
+    InstrumentOf, OccupationOf, BirthDateOf, ActivityPeriodEndOf, ActivityPeriodStartOf, CauseDeathOf, DayDeathOf
 
 
 class Band(Particle):
@@ -214,3 +214,43 @@ class BirthDatesOf(QuestionTemplate):
     def interpret(self, match):
         birthdate = BirthDateOf(match.person)
         return birthdate,"literal"
+
+class ActivityPeriodsOf(QuestionTemplate): #----------------------------------O GRIFO FEZ ESTA MERDA MAL
+    """
+    Ex: What is the activity period of Amy Winehouse?
+    """
+    regex = Lemmas("what be") + Pos("DT") + Lemmas("activity period") + Pos("IN") + Person() + Question(Pos("."))
+
+    def interpret(self, match):
+        periodEnd = ActivityPeriodEndOf(match.person)
+        periodStart = ActivityPeriodStartOf(match.person)
+        period = [periodStart,periodEnd]
+        return period, "literal"
+
+class CauseDeathsOf(QuestionTemplate): #-----------------------O GRIFO FEZ ESTA MERDA MAL
+    """
+    Ex: What was the cause of death of Amy Winehouse?
+    """
+    regex = Lemmas("what be") + Pos("DT") + Lemma("cause") + Pos("IN") + Lemma("death") + Pos("IN") + Person() + Question(Pos("."))
+
+    def interpret(self, match):
+        causedeath = CauseDeathOf(match.person)
+        return causedeath, "literal"
+
+class DayDeathsOf(QuestionTemplate):
+    """
+    Ex: When did Amy Winehouse died?
+    What was the death day of Amy Winehouse?
+    What was the day of death of Amy Winehouse?
+    In what day did Amy Winehouse died?
+    What day did Amy Winehouse died?
+    """
+    regex1 = Lemmas("when do") + Person() + Lemma("die") + Question(Pos("."))
+    regex2 = Lemmas("what be") + Pos("DT") + (Lemmas("death day") | (Lemma("day") + Pos("IN") + Lemma("death"))) + Pos("IN") + Person() + Question(Pos("."))
+    regex3 = Pos("IN") + Lemmas("what day do") + Person() + Lemma("die") + Question(Pos("."))
+    regex4 = Lemmas("what day do") + Person() + Lemma("die") + Question(Pos("."))
+    regex = regex1 | regex2 | regex3 | regex4
+
+    def interpret(self, match):
+        daydeath = DayDeathOf(match.person)
+        return daydeath,"literal"
