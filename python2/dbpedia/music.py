@@ -15,7 +15,7 @@ from refo import Plus, Question
 from quepy.dsl import HasKeyword
 from quepy.parsing import Lemma, Lemmas, Pos, QuestionTemplate, Particle
 from dsl import IsBand, LabelOf, IsMemberOf, ActiveYears, MusicGenreOf, \
-    NameOf, IsAlbum, ProducedBy, DefinitionOf, IsPerson, BirthPlaceOf, ParentOf, ChildOf
+    NameOf, IsAlbum, ProducedBy, DefinitionOf, IsPerson, BirthPlaceOf, ParentOf, ChildOf, GenreOf
 
 
 class Band(Particle):
@@ -23,7 +23,7 @@ class Band(Particle):
 
     def interpret(self, match):
         name = match.words.tokens.title()
-        return IsBand() + HasKeyword(name)
+        return HasKeyword(name)
 
 
 class BandMembersQuestion(QuestionTemplate):
@@ -136,20 +136,35 @@ class ParentsOf(QuestionTemplate):
     """
     Ex: "Who are Liv Tyler parents?"
     """
-    regex = Lemmas("who be") + Person() + Lemma("parent") + Question(Pos("."))
-    
+    regex1 = Lemmas("who be") + Person() + Lemma("parent") + Question(Pos("."))
+    regex2 = Lemmas("who be") + Person() + (Pos("POS") + Pos("NN")) + Lemma("parent") + Question(Pos("."))
+    regex = regex1 | regex2
+
     def interpret(self, match):
         parent = ParentOf(match.person)
         label = LabelOf(parent)
         return label, "define"
 
+
 class ChildrenOf(QuestionTemplate):
     """
-    Ex: "Who are Liv Tyler parents?"
+    Ex: "Who are the sons of Steven Tyler?"
     """
     regex = Lemmas("who be") + Pos("DT") + (Lemma("son") | Lemma("child")) + Pos("IN") + Person() + Question(Pos("."))
-    
+
     def interpret(self, match):
-        child= ChildOf(match.person)
+        child = ChildOf(match.person)
         label = LabelOf(child)
         return label, "define"
+
+class GenreOf(QuestionTemplate):
+    """
+    Ex: What are the music genres of Michael Jackson?
+    """
+    regex = (Lemmas("who be") | Lemma("list")) + Pos("DT") + (Lemmas("music genre") | Lemma("genre")) + Pos("IN") +\
+            Person() + Question(Pos("."))
+
+    def interpret(self, match):
+        genre= GenreOf(match.person)
+        label = LabelOf(genre)
+        return label, "enum"

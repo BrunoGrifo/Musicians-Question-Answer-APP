@@ -35,7 +35,6 @@ def print_define(results, target, metadata=None):
 
 def print_enum(results, target, metadata=None):
     used_labels = []
-    print results["results"]["bindings"]
 
     for result in results["results"]["bindings"]:
         if result[target]["type"] == u"literal":

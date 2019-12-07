@@ -149,3 +149,7 @@ class ParentOf(FixedRelation):
 class ChildOf(FixedRelation):
     relation = "dbpedia-owl:child"
     reverse = True
+
+class GenreOf(FixedRelation):
+    relation = "dbpedia-owl:genre"
+    reverse = True
