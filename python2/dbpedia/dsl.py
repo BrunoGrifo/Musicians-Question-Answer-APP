@@ -185,3 +185,7 @@ class CauseDeathOf(FixedRelation):
 class DayDeathOf(FixedRelation):
     relation = "dbpedia-owl:deathYear"
     reverse = True
+
+class TitleOf(FixedRelation):
+    relation = "dbpedia-owl:title"
+    reverse = True

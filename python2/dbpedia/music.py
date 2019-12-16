@@ -16,7 +16,7 @@ from quepy.dsl import HasKeyword
 from quepy.parsing import Lemma, Lemmas, Pos, QuestionTemplate, Particle
 from dsl import IsBand, LabelOf, IsMemberOf, ActiveYears, MusicGenreOf, \
     NameOf, IsAlbum, ProducedBy, DefinitionOf, IsPerson, BirthPlaceOf, ParentOf, ChildOf, GenreOf, BirthNameOf, \
-    InstrumentOf, OccupationOf, BirthDateOf, ActivityPeriodEndOf, ActivityPeriodStartOf, CauseDeathOf, DayDeathOf
+    InstrumentOf, OccupationOf, BirthDateOf, ActivityPeriodEndOf, ActivityPeriodStartOf, CauseDeathOf, DayDeathOf, TitleOf
 
 
 #-------------------------------PARTICLES--------------------------------------------------------------------
@@ -40,6 +40,7 @@ class Person(Particle):
     def interpret(self, match):
         name = match.words.tokens
         name = name.replace(" music","")
+        print(name)
         return HasKeyword(name)
 
 
@@ -139,6 +140,8 @@ class WhereIsFromQuestion(QuestionTemplate): #-----------------------------DONE
 class ParentsOf(QuestionTemplate): #-----------------------------------DONE
     """
     Ex: "Who are Liv Tyler parents?"
+        "Who are Liv Tyler's parents?"
+        "Who are parents of Liv Tyler?"
     """
     regex1 = Lemmas("who be") + Person() + Question((Pos("POS") + Pos("NN"))) + Lemma("parent") + Question(Pos("."))
     regex2 = Lemmas("who be") + Pos("DT") + Lemma("parent") + Pos("IN") + Person() + Question(Pos("."))
@@ -152,13 +155,14 @@ class ParentsOf(QuestionTemplate): #-----------------------------------DONE
 
 class ChildrenOf(QuestionTemplate): #-----------------------------DONE
     """
-    Ex: "Who are the sons of Steven Tyler?"
-        "List Steven Tyler children"
+    Ex: Who are the sons/girls of Steven Tyler?
+        Who are Steven Tyler's children?
+        List Steven Tyler's children
     """
     regex1 = Lemmas("who be") + Person() + Question((Pos("POS") + Pos("NN"))) + (
-                Lemma("son") | Lemma("child")) + Question(Pos("."))
-    regex2 = Lemmas("who be") + Pos("DT") + (Lemma("son") | Lemma("child")) + Pos("IN") + Person() + Question(Pos("."))
-    regex3 = Lemma("list") + Person() + Lemma("child")
+                Lemma("son") | Lemma("child") | Lemma("girl")) + Question(Pos("."))
+    regex2 = Lemmas("who be") + Pos("DT") + (Lemma("son") | Lemma("child") | Lemma("girl")) + Pos("IN") + Person() + Question(Pos("."))
+    regex3 = Lemma("list") + Person()+ Question((Pos("POS") + Pos("NN"))) + Lemma("child")
     regex = regex1 | regex2 | regex3
 
     def interpret(self, match):
@@ -170,6 +174,7 @@ class GenresOf(QuestionTemplate):  # --------------------------- DONE
     """
     Ex: What are the music genres of Michael Jackson?
         List Micheal Jackson music genres
+        List the muric genres of Michael Jackson
         
     """
     regex1 = Lemmas("what be") + Pos("DT") + (Lemmas("music genre") | Lemma("genre")) + Pos("IN") + Person() + Question(Pos("."))
@@ -183,22 +188,23 @@ class GenresOf(QuestionTemplate):  # --------------------------- DONE
         label = LabelOf(genre)
         return [label], "enum"
 
-class BirthNamesOf(QuestionTemplate):
+class BirthNamesOf(QuestionTemplate): #------------------------DONE
     """
     Ex: What is the real name of Eminem?
+        What is Eminem's real name?
     """
     regex1 = Lemmas("what be") + Pos("DT") + (Lemmas("real name") | Lemmas("birth name")) + Pos("IN") + Person() + Question(Pos("."))
-    regex2 = Lemmas("what be") + Person() + Question((Pos("POS") + Pos("NN"))) + (Lemmas("real name") | Lemmas("birth name"))
+    regex2 = Lemmas("what be") + Person() + Question(Pos("POS") + Pos("JJ")) + (Lemmas("real name") | Lemmas("birth name")) + Question(Pos("."))
     regex = regex1 | regex2
     def interpret(self, match):
         birth = BirthNameOf(match.person)
         return [birth], "define"
 
-class InstrumentsOf(QuestionTemplate):
+class InstrumentsOf(QuestionTemplate): #-------------------------DONE
     """
     Ex: What instruments does Dave Grohl play?
     """
-    regex = Lemmas("what instrument") + Question(Lemma("do")) + Person() + Lemma("play") + Question(Pos("."))
+    regex = (Lemma("what") | Lemma("which")) + Lemma("instrument") + Question(Lemma("do")) + Person() + Lemma("play") + Question(Pos("."))
 
     def interpret(self, match):
         instrument = InstrumentOf(match.person)
@@ -207,12 +213,30 @@ class InstrumentsOf(QuestionTemplate):
 class OccupationsOf(QuestionTemplate):
     """
     Ex: What are the occupations of Jennifer Lopez?
+        What does Jennifer Lopez do?
+        What are Jennifer Lopez other jobs?
+        What does Jennifer Lopez do besides <verb>?
+        What is Jennifer Lopez profession?
+        What does Jennifer Lopez do for living?
+        What is Jennifer Lopez known for?
+        What are Jennifer Lopez's occupations?
+        List Jennifer Lopez occupations
+        List Jennifer Lopez other jobs
+        List Jennifer Lopez professions
     """
-    regex = Lemmas("what be") + Pos("DT") + Lemma("occupation") + Pos("IN") + Person() + Question(Pos("."))
+    regex1 = Lemmas("what be") + Pos("DT") + Lemma("occupation") + Pos("IN") + Person() + Question(Pos("."))
+    regex2 = Lemmas("what do") + Person() + Lemma("do") + Question(Pos("IN") + (Pos("NN") | Pos("VBG") | Pos("VB"))) + Question(Pos("."))
+    regex3 = Lemmas("what be") + Person()
+    regex4 = regex3 + Question(Lemma("other")) + Lemma("job") + Question(Pos("."))
+    regex5 = regex3 + Lemma("profession") + Question(Pos("."))
+    regex6 = regex3 + Lemma("know") + Pos("IN") + Question(Pos("."))
+    regex7 = regex3 + Pos("POS") + Pos("NN") + (Lemma("profession") | (Question(Lemma("other")) + Lemma("job")) | Lemma("occupation")) + Question(Pos("."))
+    regex = regex1 | regex2 | regex4 | regex5 | regex6 | regex7
 
     def interpret(self, match):
         occupation = OccupationOf(match.person)
-        return [occupation],"literal"
+        title = TitleOf(occupation)
+        return [title], "literal"
 
 class BirthDatesOf(QuestionTemplate):
     """
