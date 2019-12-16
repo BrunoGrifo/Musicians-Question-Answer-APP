@@ -16,7 +16,7 @@ from quepy.dsl import HasKeyword
 from quepy.parsing import Lemma, Lemmas, Pos, QuestionTemplate, Particle
 from dsl import IsBand, LabelOf, IsMemberOf, ActiveYears, MusicGenreOf, \
     NameOf, IsAlbum, ProducedBy, DefinitionOf, IsPerson, BirthPlaceOf, ParentOf, ChildOf, GenreOf, BirthNameOf, \
-    InstrumentOf, OccupationOf, BirthDateOf, ActivityPeriodEndOf, ActivityPeriodStartOf, CauseDeathOf, DayDeathOf, TitleOf
+    InstrumentOf, OccupationOf, BirthDateOf, ActivityPeriodEndOf, ActivityPeriodStartOf, CauseDeathOf, DayDeathOf, TitleOf, CauseDeathName, ArtistOf, AlbumTitleOf, MusicTitleOf
 
 
 #-------------------------------PARTICLES--------------------------------------------------------------------
@@ -192,6 +192,8 @@ class BirthNamesOf(QuestionTemplate): #------------------------DONE
     """
     Ex: What is the real name of Eminem?
         What is Eminem's real name?
+        what is Eminem's birth name?
+        what is the birth name of Eminem?
     """
     regex1 = Lemmas("what be") + Pos("DT") + (Lemmas("real name") | Lemmas("birth name")) + Pos("IN") + Person() + Question(Pos("."))
     regex2 = Lemmas("what be") + Person() + Question(Pos("POS") + Pos("JJ")) + (Lemmas("real name") | Lemmas("birth name")) + Question(Pos("."))
@@ -202,15 +204,23 @@ class BirthNamesOf(QuestionTemplate): #------------------------DONE
 
 class InstrumentsOf(QuestionTemplate): #-------------------------DONE
     """
-    Ex: What instruments does Dave Grohl play?
+    Ex: What instruments does Dave Grohl play? 
+        List the instruments that Dave Grohl plays    ------------------------why?
+        What are the instruments that Dave Grohl is known for?
+
+
+
     """
-    regex = (Lemma("what") | Lemma("which")) + Lemma("instrument") + Question(Lemma("do")) + Person() + Lemma("play") + Question(Pos("."))
+    regex1 = (Lemma("what") | Lemma("which")) + Lemma("instrument") + Question(Lemma("do")) + Person() + Lemma("play") + Question(Pos("."))
+    regex2 = Lemma("list") + Pos("DT") + Lemma("instrument") + Pos("WDT") + Person() + Lemma("play") + Question(Pos("."))
+    regex3 = Lemmas("what be") + Pos("DT") + Lemma("instrument") + Pos("WDT") + Person() + Lemma("be") + Lemma("know") + Lemma("for") + Question(Pos("."))
+    regex = regex1 | regex2 | regex3
 
     def interpret(self, match):
         instrument = InstrumentOf(match.person)
         return [instrument],"literal"
 
-class OccupationsOf(QuestionTemplate):
+class OccupationsOf(QuestionTemplate): #--------------------DONE 
     """
     Ex: What are the occupations of Jennifer Lopez?
         What does Jennifer Lopez do?
@@ -227,28 +237,34 @@ class OccupationsOf(QuestionTemplate):
     regex1 = Lemmas("what be") + Pos("DT") + Lemma("occupation") + Pos("IN") + Person() + Question(Pos("."))
     regex2 = Lemmas("what do") + Person() + Lemma("do") + Question(Pos("IN") + (Pos("NN") | Pos("VBG") | Pos("VB"))) + Question(Pos("."))
     regex3 = Lemmas("what be") + Person()
-    regex4 = regex3 + Question(Lemma("other")) + Lemma("job") + Question(Pos("."))
-    regex5 = regex3 + Lemma("profession") + Question(Pos("."))
-    regex6 = regex3 + Lemma("know") + Pos("IN") + Question(Pos("."))
+    regex4 = regex3 + (Question(Lemma("other")) + Lemma("job") | Lemma("profession") | Lemma("know") + Pos("IN"))+ Question(Pos("."))
     regex7 = regex3 + Pos("POS") + Pos("NN") + (Lemma("profession") | (Question(Lemma("other")) + Lemma("job")) | Lemma("occupation")) + Question(Pos("."))
-    regex = regex1 | regex2 | regex4 | regex5 | regex6 | regex7
+    regex8 = Lemma("list") + Person() + (Lemma("profession") | (Question(Lemma("other")) + Lemma("job")) | Lemma("occupation")) + Question(Pos("."))
+    
+    
+    regex = regex1 | regex2 | regex4 | regex7 | regex8
 
     def interpret(self, match):
         occupation = OccupationOf(match.person)
         title = TitleOf(occupation)
         return [title], "literal"
 
-class BirthDatesOf(QuestionTemplate):
+class BirthDatesOf(QuestionTemplate):  #------------------------Done
     """
     Ex: When was Justin Bieber born?
+        When does Justin Bieber celebrates his birthday?
+        When was the day Justin Bieber was born?
+
     """
-    regex = Lemmas("when be") + Person() + Lemma("bear") + Question(Pos("."))
+    regex1 = Lemmas("when be") + Question(Pos("DT") + Lemma("day")) + Person() + Question(Lemma("be")) + Lemma("bear") + Question(Pos("."))
+    regex2 = Lemmas("when do") + Person() + Lemma("celebrate") + Pos("PRP$") + Lemma("birthday") + Question(Pos("."))
+    regex = regex1 | regex2
 
     def interpret(self, match):
         birthdate = BirthDateOf(match.person)
         return [birthdate],"literal"
 
-class ActivityPeriodsOf(QuestionTemplate): #----------------------------------O GRIFO FEZ ESTA MAL
+class ActivityPeriodsOf(QuestionTemplate): 
     """
     Ex: What is the activity period of Amy Winehouse?
         In what years 
@@ -264,23 +280,27 @@ class ActivityPeriodsOf(QuestionTemplate): #----------------------------------O 
         """
         return [ActivityPeriodStartOf(match.person),ActivityPeriodEndOf(match.person)], "literal"
 
-class CauseDeathsOf(QuestionTemplate): #-----------------------O GRIFO FEZ ESTA  MAL
+class CauseDeathsOf(QuestionTemplate): #-----------------------DONE
     """
     Ex: What was the cause of death of Amy Winehouse?
+        How did Amy Winehouse die?
     """
-    regex = Lemmas("what be") + Pos("DT") + Lemma("cause") + Pos("IN") + Lemma("death") + Pos("IN") + Person() + Question(Pos("."))
+    regex1 = Lemmas("what be") + Pos("DT") + Lemma("cause") + Pos("IN") + Lemma("death") + Pos("IN") + Person() + Question(Pos("."))
+    regex2 = Lemmas("how do") + Person() + Lemma("die") + Question(Pos("."))
+    regex = regex1 | regex2
 
     def interpret(self, match):
         causedeath = CauseDeathOf(match.person)
-        return [causedeath], "literal"
+        name = CauseDeathName(causedeath)
+        return [name], "literal"
 
-class DayDeathsOf(QuestionTemplate):
+class DayDeathsOf(QuestionTemplate): #-----------------------------DONE +-
     """
     Ex: When did Amy Winehouse died?
-    What was the death day of Amy Winehouse?
-    What was the day of death of Amy Winehouse?
-    In what day did Amy Winehouse died?
-    What day did Amy Winehouse died?
+        What was the death day of Amy Winehouse?
+        What was the day of death of Amy Winehouse?
+        In what day did Amy Winehouse died?
+        What day did Amy Winehouse died?
     """
     regex1 = Lemmas("when do") + Person() + Lemma("die") + Question(Pos("."))
     regex2 = Lemmas("what be") + Pos("DT") + (Lemmas("death day") | (Lemma("day") + Pos("IN") + Lemma("death"))) + Pos("IN") + Person() + Question(Pos("."))
@@ -291,3 +311,34 @@ class DayDeathsOf(QuestionTemplate):
     def interpret(self, match):
         daydeath = DayDeathOf(match.person)
         return [daydeath],"literal"
+
+
+class AlbumsOf(QuestionTemplate): 
+    """
+    Ex: List all Michael Jackson's musics
+        List all musics performed by Michael Jackson
+
+    """
+    regex1 = Lemma("list") + Question(Lemma("all")) + Person() + Lemma("album") + Question(Pos("."))
+    regex2 = Lemma("list") + Lemma("all") + Lemma("album") + Lemma("perform") + Pos("IN") + (Person() | Band())
+    regex = regex1 | regex2 #| regex3 | regex4
+    def interpret(self, match):
+        artist = ArtistOf(match.person)
+        albums = AlbumTitleOf(artist)
+        return [albums],"enum"
+
+
+class MusicsOf(QuestionTemplate): 
+    """
+    Ex: List all Michael Jackson's musics
+        List all musics performed by Michael Jackson
+
+    """
+    regex1 = Lemma("list") + Question(Lemma("all")) + Person() + Lemma("music") + Question(Pos("."))
+    regex2 = Lemma("list") + Lemma("all") + Lemma("music") + Lemma("perform") + Pos("IN") + (Person() | Band())
+    regex = regex1 | regex2 #| regex3 | regex4
+    def interpret(self, match):
+        artist = ArtistOf(match.person)
+        musics = MusicTitleOf(artist)
+
+        return [musics],"enum"

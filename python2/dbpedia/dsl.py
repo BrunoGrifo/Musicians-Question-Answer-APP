@@ -182,10 +182,26 @@ class CauseDeathOf(FixedRelation):
     relation = "dbpedia-owl:deathCause"
     reverse = True
 
+class CauseDeathName(FixedRelation):
+    relation = "rdfs:label"
+    reverse = True
+
 class DayDeathOf(FixedRelation):
     relation = "dbpedia-owl:deathYear"
     reverse = True
 
 class TitleOf(FixedRelation):
     relation = "dbpedia-owl:title"
+    reverse = True
+
+class ArtistOf(FixedRelation):
+    relation = "dbpedia-owl:artist"
+    reverse = False
+
+class AlbumTitleOf(FixedRelation):
+    relation = "foaf:name"
+    reverse = True
+
+class MusicTitleOf(FixedRelation):
+    relation = "dbp:title"
     reverse = True
