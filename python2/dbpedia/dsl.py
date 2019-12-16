@@ -68,7 +68,7 @@ class IsMemberOf(FixedRelation):
 
 
 class ActiveYears(FixedRelation):
-    relation = "dbpprop:yearsActive"
+    relation = "dbpedia-owl:activeYearsStartYear"
     reverse = True
 
 

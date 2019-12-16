@@ -19,15 +19,42 @@ from dsl import IsBand, LabelOf, IsMemberOf, ActiveYears, MusicGenreOf, \
     InstrumentOf, OccupationOf, BirthDateOf, ActivityPeriodEndOf, ActivityPeriodStartOf, CauseDeathOf, DayDeathOf
 
 
+#-------------------------------PARTICLES--------------------------------------------------------------------
+
+
 class Band(Particle):
     regex = Question(Pos("DT")) + Plus(Pos("NN") | Pos("NNP"))
+    #regex = Question(Pos("DT")) +  Pos("NNP")
 
     def interpret(self, match):
         name = match.words.tokens.title()
+        name = name.replace("List ","")
+        name = name.replace(" list","")
+        print(name)
         return HasKeyword(name)
 
 
-class BandMembersQuestion(QuestionTemplate):
+class Person(Particle):
+    regex = Plus(Pos("NN") | Pos("NNS") | Pos("NNP") | Pos("NNPS"))
+
+    def interpret(self, match):
+        name = match.words.tokens
+        name = name.replace(" music","")
+        return HasKeyword(name)
+
+
+#---------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+class BandMembersQuestion(QuestionTemplate): #---------------------DONE
 
     """
     Regex for questions about band member.
@@ -39,16 +66,19 @@ class BandMembersQuestion(QuestionTemplate):
     regex2 = Lemma("member") + Pos("IN") + Band()
     regex3 = Pos("WP") + Lemma("be") + Pos("DT") + Lemma("member") + \
         Pos("IN") + Band()
+    regex4 = Lemma("list") + Pos("DT") + Lemma("member") + Pos("IN") + Band()
+    regex5 = Lemma("list") + Band() + Lemma("member")
 
-    regex = (regex1 | regex2 | regex3) + Question(Pos("."))
+    regex = (regex1 | regex2 | regex3 | regex4| regex5) + Question(Pos("."))
 
     def interpret(self, match):
+        #.replace("List","")
         member = IsMemberOf(match.band)
         label = LabelOf(member)
-        return label, "enum"
+        return [label], "enum"
 
 
-class FoundationQuestion(QuestionTemplate):
+class FoundationQuestion(QuestionTemplate):  #------------------------------DONE
     """
     Regex for questions about the creation of a band.
     Ex: "When was Pink Floyd founded?"
@@ -60,82 +90,53 @@ class FoundationQuestion(QuestionTemplate):
 
     def interpret(self, match):
         active_years = ActiveYears(match.band)
-        return active_years, "literal"
+        return [active_years], "literal"
 
-
-class GenreQuestion(QuestionTemplate):
-    """
-    Regex for questions about the genre of a band.
-    Ex: "What is the music genre of Gorillaz?"
-        "Music genre of Radiohead"
-    """
-
-    optional_opening = Question(Pos("WP") + Lemma("be") + Pos("DT"))
-    regex = optional_opening + Question(Lemma("music")) + Lemma("genre") + \
-        Pos("IN") + Band() + Question(Pos("."))
-
-    def interpret(self, match):
-        genre = MusicGenreOf(match.band)
-        label = LabelOf(genre)
-        return label, "enum"
-
-
-class AlbumsOfQuestion(QuestionTemplate):
+class AlbumsOfQuestion(QuestionTemplate): #--------------------------------DONE
     """
     Ex: "List albums of Pink Floyd"
         "What albums did Pearl Jam record?"
         "Albums by Metallica"
     """
 
-    regex = (Question(Lemma("list")) + (Lemma("album") | Lemma("albums")) + \
-             Pos("IN") + Band()) | \
-            (Lemmas("what album do") + Band() +
-             (Lemma("record") | Lemma("make")) + Question(Pos("."))) | \
-            (Lemma("list") + Band() + Lemma("album"))
-
+    regex1 = Question(Lemma("list")) + (Lemma("album") | Lemma("albums")) + Pos("IN") + Band() + Question(Pos("."))
+    regex2 = Lemma("what") + (Lemma("album") | Lemma("albums")) + Lemma("do") + Band() + Lemma("record") + Question(Pos("."))
+    regex3 = Question(Lemma("list")) + (Lemma("album") | Lemma("albums")) + Pos("IN") + Band() + Question(Pos("."))
+    regex = regex1 | regex2 | regex3
     def interpret(self, match):
         album = IsAlbum() + ProducedBy(match.band)
         name = NameOf(album)
-        return name, "enum"
+        return [name], "enum"
 
 
-class Person(Particle):
-    regex = Plus(Pos("NN") | Pos("NNS") | Pos("NNP") | Pos("NNPS"))
-
-    def interpret(self, match):
-        name = match.words.tokens
-        return HasKeyword(name)
-
-
-class WhoIs(QuestionTemplate):
+class WhoIs(QuestionTemplate):  #-----------------------------Done
     """
     Ex: "Who is Tom Cruise?"
     """
     regex = Lemma("who") + Lemma("be") + Person() + Question(Pos("."))
 
+
     def interpret(self, match):
         definition = DefinitionOf(match.person)
-        return definition, "define"
+        return [definition], "define"
 
 
-
-class WhereIsFromQuestion(QuestionTemplate): #______________________O GRIFO FEZ ESTA MERDA MAL
+class WhereIsFromQuestion(QuestionTemplate): #-----------------------------DONE
     """
     Ex: "Where is Bill Gates from?"
-    Ex: "Where was Whitney Houston born?
+    Ex: "Where was Whitney Houston born?"
     """
 
-    regex = Lemmas("where be") + Person() + (Lemma("from") | Lemma("born")) + \
-        Question(Pos("."))
+    regex = Lemmas("where be") + Person() + (Lemma("from") | Lemma("bear")) + Question(Pos("."))
 
     def interpret(self, match):
         birth_place = BirthPlaceOf(match.person)
         label = LabelOf(birth_place)
 
-        return label, "enum"
+        return [label], "enum"
 
 
-class ParentsOf(QuestionTemplate):
+class ParentsOf(QuestionTemplate): #-----------------------------------DONE
     """
     Ex: "Who are Liv Tyler parents?"
     """
@@ -146,44 +147,52 @@ class ParentsOf(QuestionTemplate):
     def interpret(self, match):
         parent = ParentOf(match.person)
         label = LabelOf(parent)
-        return label, "define"
+        return [label], "define"
 
 
-class ChildrenOf(QuestionTemplate):
+class ChildrenOf(QuestionTemplate): #-----------------------------DONE
     """
     Ex: "Who are the sons of Steven Tyler?"
+        "List Steven Tyler children"
     """
     regex1 = Lemmas("who be") + Person() + Question((Pos("POS") + Pos("NN"))) + (
                 Lemma("son") | Lemma("child")) + Question(Pos("."))
     regex2 = Lemmas("who be") + Pos("DT") + (Lemma("son") | Lemma("child")) + Pos("IN") + Person() + Question(Pos("."))
-    regex = regex1 | regex2
+    regex3 = Lemma("list") + Person() + Lemma("child")
+    regex = regex1 | regex2 | regex3
 
     def interpret(self, match):
         child = ChildOf(match.person)
         label = LabelOf(child)
-        return label, "define"
+        return [label], "define"
 
-class GenresOf(QuestionTemplate):  # --------------------------- O GRIFO FEZ ESTA MERDA MAL
+class GenresOf(QuestionTemplate):  # --------------------------- DONE
     """
     Ex: What are the music genres of Michael Jackson?
+        List Micheal Jackson music genres
+        
     """
-    regex = Lemma("what be") + Pos("DT") + (Lemmas("music genre") | Lemma("genre")) + Pos("IN") +\
-            Person() + Question(Pos("."))
-
+    regex1 = Lemmas("what be") + Pos("DT") + (Lemmas("music genre") | Lemma("genre")) + Pos("IN") + Person() + Question(Pos("."))
+    regex2 = Lemma("list")  +  Person() + (Lemmas("music genre") | Lemma("genre")) + Question(Pos("."))
+    regex3 = Lemma("list")  + Pos("DT") + (Lemmas("music genre") | Lemma("genre")) + Pos("IN") +  Person()
+    regex4 = Question(Pos("WP") + Lemma("be") + Pos("DT"))
+    regex5 = regex4 + Question(Lemma("music")) + Lemma("genre") + Pos("IN") + Band() + Question(Pos("."))
+    regex = regex1 | regex2 | regex3 | regex4 | regex5
     def interpret(self, match):
         genre= GenreOf(match.person)
         label = LabelOf(genre)
-        return label, "enum"
+        return [label], "enum"
 
 class BirthNamesOf(QuestionTemplate):
     """
     Ex: What is the real name of Eminem?
     """
-    regex = Lemmas("what be") + Pos("DT") + (Lemmas("real name") | Lemmas("birth name")) + Pos("IN") + Person() + Question(Pos("."))
-
+    regex1 = Lemmas("what be") + Pos("DT") + (Lemmas("real name") | Lemmas("birth name")) + Pos("IN") + Person() + Question(Pos("."))
+    regex2 = Lemmas("what be") + Person() + Question((Pos("POS") + Pos("NN"))) + (Lemmas("real name") | Lemmas("birth name"))
+    regex = regex1 | regex2
     def interpret(self, match):
         birth = BirthNameOf(match.person)
-        return birth, "define"
+        return [birth], "define"
 
 class InstrumentsOf(QuestionTemplate):
     """
@@ -193,7 +202,7 @@ class InstrumentsOf(QuestionTemplate):
 
     def interpret(self, match):
         instrument = InstrumentOf(match.person)
-        return instrument,"literal"
+        return [instrument],"literal"
 
 class OccupationsOf(QuestionTemplate):
     """
@@ -203,7 +212,7 @@ class OccupationsOf(QuestionTemplate):
 
     def interpret(self, match):
         occupation = OccupationOf(match.person)
-        return occupation,"literal"
+        return [occupation],"literal"
 
 class BirthDatesOf(QuestionTemplate):
     """
@@ -213,21 +222,25 @@ class BirthDatesOf(QuestionTemplate):
 
     def interpret(self, match):
         birthdate = BirthDateOf(match.person)
-        return birthdate,"literal"
+        return [birthdate],"literal"
 
-class ActivityPeriodsOf(QuestionTemplate): #----------------------------------O GRIFO FEZ ESTA MERDA MAL
+class ActivityPeriodsOf(QuestionTemplate): #----------------------------------O GRIFO FEZ ESTA MAL
     """
     Ex: What is the activity period of Amy Winehouse?
+        In what years 
+        Active years of 
     """
     regex = Lemmas("what be") + Pos("DT") + Lemmas("activity period") + Pos("IN") + Person() + Question(Pos("."))
 
     def interpret(self, match):
+        """
         periodEnd = ActivityPeriodEndOf(match.person)
         periodStart = ActivityPeriodStartOf(match.person)
         period = [periodStart,periodEnd]
-        return period, "literal"
+        """
+        return [ActivityPeriodStartOf(match.person),ActivityPeriodEndOf(match.person)], "literal"
 
-class CauseDeathsOf(QuestionTemplate): #-----------------------O GRIFO FEZ ESTA MERDA MAL
+class CauseDeathsOf(QuestionTemplate): #-----------------------O GRIFO FEZ ESTA  MAL
     """
     Ex: What was the cause of death of Amy Winehouse?
     """
@@ -235,7 +248,7 @@ class CauseDeathsOf(QuestionTemplate): #-----------------------O GRIFO FEZ ESTA 
 
     def interpret(self, match):
         causedeath = CauseDeathOf(match.person)
-        return causedeath, "literal"
+        return [causedeath], "literal"
 
 class DayDeathsOf(QuestionTemplate):
     """
@@ -253,4 +266,4 @@ class DayDeathsOf(QuestionTemplate):
 
     def interpret(self, match):
         daydeath = DayDeathOf(match.person)
-        return daydeath,"literal"
+        return [daydeath],"literal"

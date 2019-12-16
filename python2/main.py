@@ -80,7 +80,7 @@ if __name__ == "__main__":
         question = " ".join(sys.argv[1:])
         questions = [question]
     else:
-        print quepy.nltktagger.run_nltktagger(u"What was the death day of Amy Winehouse?", nltk_data_path=None)
+        print quepy.nltktagger.run_nltktagger(u" Clapton music genres", nltk_data_path=None)
         print("You have to give me a question my dude!")
         sys.exit()
 
@@ -115,19 +115,21 @@ if __name__ == "__main__":
             sparql.setQuery(query)
             sparql.setReturnFormat(JSON)
             results = sparql.query().convert()
+            f = open("output.txt",'w')
+            print >>f, results
             
 
             if not results["results"]["bindings"]:
                 print "No answer found :("
                 continue
-
+        #print(results)
         """
         print("--------------------------------------------------Entrou")
-        print(results)
+        print(metadata[0])
         print("---------")
-        print(target)
+        print(metadata[1])
         print("---------")
-        print(metadata)
+        #print(metadata)
         print("--------------------------------------------------Entrou2")
         """
         print_handlers[query_type](results, target, metadata)
