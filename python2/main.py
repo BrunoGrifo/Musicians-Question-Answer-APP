@@ -4,10 +4,9 @@
 # Copyright (c) 2012, Machinalis S.R.L.
 # This file is part of quepy and is distributed under the Modified BSD License.
 # You should have received a copy of license in the LICENSE file.
-#
-# Authors: Rafael Carrascosa <rcarrascosa@machinalis.com>
-#          Gonzalo Garcia Berrotaran <ggarcia@machinalis.com>
 
+#Save quepy files
+#/Users/brunogrifo/opt/anaconda3/envs/conda-env/lib/python2.7/site-packages/quepy/save
 """
 Main script for DBpedia quepy.
 """
@@ -44,7 +43,14 @@ def print_enum(results, target, metadata=None):
                     used_labels.append(label)
                     print label
 
-
+def print_musics(results, target, metadata=None):
+    used_labels = []
+    for result in results["results"]["bindings"]:
+        label = result[target]["value"]
+        if label not in used_labels:
+            used_labels.append(label)
+            print label
+    
 def print_literal(results, target, metadata=None):
     for result in results["results"]["bindings"]:
         literal = result[target]["value"]
@@ -80,7 +86,7 @@ if __name__ == "__main__":
         question = " ".join(sys.argv[1:])
         questions = [question]
     else:
-        print quepy.nltktagger.run_nltktagger(u"List all musics performed by Michael Jackson", nltk_data_path=None)
+        print quepy.nltktagger.run_nltktagger(u"List all music from Looking Back to Yesterday", nltk_data_path=None)
         print("You have to give me a question my dude!")
         sys.exit()
 
@@ -89,6 +95,7 @@ if __name__ == "__main__":
         "enum": print_enum,
         "literal": print_literal,
         "age": print_age,
+        "musics": print_musics,
     }
 
     for question in questions:

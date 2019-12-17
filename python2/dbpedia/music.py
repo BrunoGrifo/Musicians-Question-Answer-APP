@@ -28,9 +28,9 @@ class Band(Particle):
 
     def interpret(self, match):
         name = match.words.tokens.title()
+        print(name)
         name = name.replace("List ","")
         name = name.replace(" list","")
-        print(name)
         return HasKeyword(name)
 
 
@@ -313,14 +313,15 @@ class DayDeathsOf(QuestionTemplate): #-----------------------------DONE +-
         return [daydeath],"literal"
 
 
-class AlbumsOf(QuestionTemplate): 
+class AlbumsOf(QuestionTemplate): #-----------------Done
     """
-    Ex: List all Michael Jackson's musics
-        List all musics performed by Michael Jackson
+    Ex: List all Michael Jackson's albums
+        List all albums performed by Michael Jackson
+        List all albums of Michael Jackson
 
     """
-    regex1 = Lemma("list") + Question(Lemma("all")) + Person() + Lemma("album") + Question(Pos("."))
-    regex2 = Lemma("list") + Lemma("all") + Lemma("album") + Lemma("perform") + Pos("IN") + (Person() | Band())
+    regex1 = Lemma("list") + Question(Lemma("all")) + (Person() | Band()) + Question(Pos("POS") + Pos("NN")) + Lemma("album") + Question(Pos("."))
+    regex2 = Lemma("list") + Question(Lemma("all")) + Lemma("album") + Question(Lemma("perform")) + Pos("IN") + (Person() | Band()) + Question(Pos("."))
     regex = regex1 | regex2 #| regex3 | regex4
     def interpret(self, match):
         artist = ArtistOf(match.person)
@@ -334,11 +335,35 @@ class MusicsOf(QuestionTemplate):
         List all musics performed by Michael Jackson
 
     """
-    regex1 = Lemma("list") + Question(Lemma("all")) + Person() + Lemma("music") + Question(Pos("."))
-    regex2 = Lemma("list") + Lemma("all") + Lemma("music") + Lemma("perform") + Pos("IN") + (Person() | Band())
+    regex1 = Lemma("list") + Question(Lemma("all")) + (Person() | Band()) +  Question(Pos("POS") + Pos("NN"))  + Lemma("music") + Question(Pos("."))
+    regex2 = Lemma("list") + Question(Lemma("all")) + Lemma("music") + Question(Lemma("perform")) + Pos("IN") + (Person() | Band()) + Question(Pos("."))
     regex = regex1 | regex2 #| regex3 | regex4
     def interpret(self, match):
         artist = ArtistOf(match.person)
         musics = MusicTitleOf(artist)
 
-        return [musics],"enum"
+        return [musics],"musics"
+
+class Album(Particle):
+    regex = Plus(Pos("NN") | Pos("NNS") | Pos("NNP") | Pos("NNPS") | Pos("VB") | Pos("DT") | \
+            Pos("VBG") | Pos("CC") | Pos("IN") | Pos("CD") | Pos("PRP") | Pos("POS") | Pos(".") | \
+            Pos("TO") | Pos("JJ") | Pos("JJS")| Pos(":") | Pos(")") | Pos("("))
+
+    def interpret(self, match):
+        name = match.words.tokens
+        name = name.replace(" ?","")
+        name = name.replace("?","")
+        print(name)
+        return HasKeyword(name)
+
+class MusicOfAlbum(QuestionTemplate): 
+    """
+    Ex: List all music of Looking Back to Yesterday
+    """
+    regex = Lemma("list") + Question(Lemma("all")) + Lemma("music") + Pos("IN") + Album()
+
+    def interpret(self, match):
+        print(match.__str__())
+        album = match.album + IsAlbum()
+        musics = MusicTitleOf(album)
+        return [musics],"musics"
