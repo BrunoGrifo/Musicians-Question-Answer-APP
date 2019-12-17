@@ -28,8 +28,10 @@ dbpedia = quepy.install("dbpedia")
 def print_define(results, target, metadata=None):
     for result in results["results"]["bindings"]:
         if result[target]["xml:lang"] == "en":
-            print result[target]["value"]
-            print
+            try:
+                print result[target]["value"]
+            except:
+                print 
 
 
 def print_enum(results, target, metadata=None):
@@ -41,7 +43,10 @@ def print_enum(results, target, metadata=None):
                 label = result[target]["value"]
                 if label not in used_labels:
                     used_labels.append(label)
-                    print label
+                    try:
+                        print label
+                    except:
+                        print "*****Encoding error*****"
 
 def print_musics(results, target, metadata=None):
     used_labels = []
@@ -49,15 +54,24 @@ def print_musics(results, target, metadata=None):
         label = result[target]["value"]
         if label not in used_labels:
             used_labels.append(label)
-            print label
+            try:
+                print label
+            except:
+                print "*****Encoding error*****"
     
 def print_literal(results, target, metadata=None):
     for result in results["results"]["bindings"]:
         literal = result[target]["value"]
         if metadata:
-            print metadata.format(literal)
+            try:
+                print metadata.format(literal)
+            except:
+                print "*****Encoding error*****"
         else:
-            print literal
+            try:
+                print literal
+            except:
+                print "*****Encoding error*****"
 
 
 def print_age(results, target, metadata=None):
@@ -72,7 +86,10 @@ def print_age(results, target, metadata=None):
     now = now.date()
 
     age = now - birth_date
-    print "{} years old".format(age.days / 365)
+    try:
+        print "{} years old".format(age.days / 365)
+    except:
+        print "*****Encoding error*****"
 
 
 

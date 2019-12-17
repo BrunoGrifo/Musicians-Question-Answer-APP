@@ -84,11 +84,15 @@ class FoundationQuestion(QuestionTemplate):  #------------------------------DONE
     Regex for questions about the creation of a band.
     Ex: "When was Pink Floyd founded?"
         "When was Korn formed?"
+        "What was the foundation year of Pink Floyd?"  
+        "In what year was Pink Floyd founded?"
     """
 
-    regex = Pos("WRB") + Lemma("be") + Band() + \
-        (Lemma("form") | Lemma("found")) + Question(Pos("."))
+    regex1 = Pos("WRB") + Lemma("be") + Band() + (Lemma("form") | Lemma("found")) + Question(Pos("."))
+    regex2 = Lemmas("what be") + Pos("DT") + Lemmas("foundation year") + Pos("IN") + Band() + Question(Pos(".")) ############################################
+    regex3 = Lemmas("in what year be") + Band() + Lemma("found") + Question(Pos(".")) ############################################################
 
+    regex = regex1 | regex2 | regex3
     def interpret(self, match):
         active_years = ActiveYears(match.band)
         return [active_years], "literal"
@@ -98,12 +102,14 @@ class AlbumsOfQuestion(QuestionTemplate): #--------------------------------DONE
     Ex: "List albums of Pink Floyd"
         "What albums did Pearl Jam record?"
         "Albums by Metallica"
+        "What albuns do Pearl Jam have?"
     """
 
     regex1 = Question(Lemma("list")) + (Lemma("album") | Lemma("albums")) + Pos("IN") + Band() + Question(Pos("."))
     regex2 = Lemma("what") + (Lemma("album") | Lemma("albums")) + Lemma("do") + Band() + Lemma("record") + Question(Pos("."))
     regex3 = Question(Lemma("list")) + (Lemma("album") | Lemma("albums")) + Pos("IN") + Band() + Question(Pos("."))
-    regex = regex1 | regex2 | regex3
+    regex4 = Lemma("what") + (Lemma("albuns") | Lemma("album")) + Lemma("do") + Band() + Lemma("have") + Question(Pos("."))
+    regex = regex1 | regex2 | regex3 | regex4
     def interpret(self, match):
         album = IsAlbum() + ProducedBy(match.band)
         name = NameOf(album)
@@ -126,9 +132,12 @@ class WhereIsFromQuestion(QuestionTemplate): #-----------------------------DONE
     """
     Ex: "Where is Bill Gates from?"
     Ex: "Where was Whitney Houston born?"
+        "Where did Bill Gates came from?"
     """
 
-    regex = Lemmas("where be") + Person() + (Lemma("from") | Lemma("bear")) + Question(Pos("."))
+    regex1 = Lemmas("where be") + Person() + (Lemma("from") | Lemma("bear")) + Question(Pos("."))
+    regex2 = Lemmas("where do") + Person() + Lemmas("come from") + Question(Pos(".")) #####################################################
+    regex = regex1 | regex2
 
     def interpret(self, match):
         birth_place = BirthPlaceOf(match.person)
@@ -175,6 +184,7 @@ class GenresOf(QuestionTemplate):  # --------------------------- DONE
     Ex: What are the music genres of Michael Jackson?
         List Micheal Jackson music genres
         List the muric genres of Michael Jackson
+        What genres do Michael Jackson play?
         
     """
     regex1 = Lemmas("what be") + Pos("DT") + (Lemmas("music genre") | Lemma("genre")) + Pos("IN") + Person() + Question(Pos("."))
@@ -182,7 +192,8 @@ class GenresOf(QuestionTemplate):  # --------------------------- DONE
     regex3 = Lemma("list")  + Pos("DT") + (Lemmas("music genre") | Lemma("genre")) + Pos("IN") +  Person()
     regex4 = Question(Pos("WP") + Lemma("be") + Pos("DT"))
     regex5 = regex4 + Question(Lemma("music")) + Lemma("genre") + Pos("IN") + Band() + Question(Pos("."))
-    regex = regex1 | regex2 | regex3 | regex4 | regex5
+    regex6 = Lemmas("what genres do") + Person() + Lemma("play") + Question(Pos(".")) 
+    regex = regex1 | regex2 | regex3 | regex4 | regex5 | regex6
     def interpret(self, match):
         genre= GenreOf(match.person)
         label = LabelOf(genre)
@@ -252,13 +263,11 @@ class OccupationsOf(QuestionTemplate): #--------------------DONE
 class BirthDatesOf(QuestionTemplate):  #------------------------Done
     """
     Ex: When was Justin Bieber born?
-        When does Justin Bieber celebrates his birthday?
         When was the day Justin Bieber was born?
 
     """
     regex1 = Lemmas("when be") + Question(Pos("DT") + Lemma("day")) + Person() + Question(Lemma("be")) + Lemma("bear") + Question(Pos("."))
-    regex2 = Lemmas("when do") + Person() + Lemma("celebrate") + Pos("PRP$") + Lemma("birthday") + Question(Pos("."))
-    regex = regex1 | regex2
+    regex = regex1
 
     def interpret(self, match):
         birthdate = BirthDateOf(match.person)
@@ -331,6 +340,24 @@ class AlbumsOf(QuestionTemplate): #-----------------Done
         return [albums],"enum"
 
 
+# class MusicsOf(QuestionTemplate): 
+#     """
+#     Ex: List all Michael Jackson's musics
+#         List all musics performed by Michael Jackson
+#         What are the musics of Michael Jackson
+
+#     """
+#     regex1 = Lemma("list") + Question(Lemma("all")) + (Person() | Band()) +  Question(Pos("POS") + Pos("NN"))  + Lemma("music") + Question(Pos("."))
+#     regex2 = Lemma("list") + Question(Lemma("all")) + Lemma("music") + Question(Lemma("perform")) + Pos("IN") + (Person() | Band()) + Question(Pos("."))
+#     regex3 = Lemmas("what be") + Pos("DT") + Lemma("music") + Pos("IN") + Person() + Question(Pos("."))
+#     regex = regex1 | regex2 | regex3
+#     def interpret(self, match):
+#         artist = ArtistOf(match.person)
+#         musics = MusicTitleOf(artist)
+
+#         return [musics],"musics"
+
+
 class MusicsOf(QuestionTemplate): 
     """
     Ex: List all Michael Jackson's musics
@@ -345,8 +372,9 @@ class MusicsOf(QuestionTemplate):
     def interpret(self, match):
         artist = ArtistOf(match.person)
         musics = MusicTitleOf(artist)
+        albums = AlbumTitleOf(artist)
+        return [musics, albums],"musics"
 
-        return [musics],"musics"
 
 class Album(Particle):
     regex = Plus(Pos("NN") | Pos("NNS") | Pos("NNP") | Pos("NNPS") | Pos("VB") | Pos("DT") | \
