@@ -86,7 +86,7 @@ if __name__ == "__main__":
         question = " ".join(sys.argv[1:])
         questions = [question]
     else:
-        print quepy.nltktagger.run_nltktagger(u"List all music from Looking Back to Yesterday", nltk_data_path=None)
+        print quepy.nltktagger.run_nltktagger(u"What musics compose Looking Back to Yesterday", nltk_data_path=None)
         print("You have to give me a question my dude!")
         sys.exit()
 

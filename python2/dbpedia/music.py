@@ -318,11 +318,13 @@ class AlbumsOf(QuestionTemplate): #-----------------Done
     Ex: List all Michael Jackson's albums
         List all albums performed by Michael Jackson
         List all albums of Michael Jackson
+        what are the albums of Michael Jackson
 
     """
     regex1 = Lemma("list") + Question(Lemma("all")) + (Person() | Band()) + Question(Pos("POS") + Pos("NN")) + Lemma("album") + Question(Pos("."))
     regex2 = Lemma("list") + Question(Lemma("all")) + Lemma("album") + Question(Lemma("perform")) + Pos("IN") + (Person() | Band()) + Question(Pos("."))
-    regex = regex1 | regex2 #| regex3 | regex4
+    regex3 = Lemmas("what be") + Pos("DT") + Lemma("album") + Pos("IN") + Person() + Question(Pos("."))
+    regex = regex1 | regex2 | regex3
     def interpret(self, match):
         artist = ArtistOf(match.person)
         albums = AlbumTitleOf(artist)
@@ -333,11 +335,13 @@ class MusicsOf(QuestionTemplate):
     """
     Ex: List all Michael Jackson's musics
         List all musics performed by Michael Jackson
+        What are the musics of Michael Jackson
 
     """
     regex1 = Lemma("list") + Question(Lemma("all")) + (Person() | Band()) +  Question(Pos("POS") + Pos("NN"))  + Lemma("music") + Question(Pos("."))
     regex2 = Lemma("list") + Question(Lemma("all")) + Lemma("music") + Question(Lemma("perform")) + Pos("IN") + (Person() | Band()) + Question(Pos("."))
-    regex = regex1 | regex2 #| regex3 | regex4
+    regex3 = Lemmas("what be") + Pos("DT") + Lemma("music") + Pos("IN") + Person() + Question(Pos("."))
+    regex = regex1 | regex2 | regex3
     def interpret(self, match):
         artist = ArtistOf(match.person)
         musics = MusicTitleOf(artist)
@@ -351,6 +355,8 @@ class Album(Particle):
 
     def interpret(self, match):
         name = match.words.tokens
+        if((name[-1]==".") | (name[-1]=="?")):
+            name = name[:-2]
         name = name.replace(" ?","")
         name = name.replace("?","")
         print(name)
@@ -359,9 +365,13 @@ class Album(Particle):
 class MusicOfAlbum(QuestionTemplate): 
     """
     Ex: List all music of Looking Back to Yesterday
+        What are the musics of Looking Back to Yesterday
+        What musics compose Looking Back to Yesterday
     """
-    regex = Lemma("list") + Question(Lemma("all")) + Lemma("music") + Pos("IN") + Album()
-
+    regex1 = Lemma("list") + Question(Lemma("all")) + Lemma("music") + Pos("IN") + Album() + Question(Pos("."))
+    regex2 = Lemmas("what be") + Pos("DT") + Lemma("music") + Pos("IN") + Album() + Question(Pos("."))
+    regex3 = Lemma("what") + Lemma("musics") + Lemma("compose") + Album() + Question(Pos("."))
+    regex = regex1 | regex2 | regex3
     def interpret(self, match):
         print(match.__str__())
         album = match.album + IsAlbum()
