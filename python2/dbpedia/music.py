@@ -276,11 +276,13 @@ class BirthDatesOf(QuestionTemplate):  #------------------------Done
 class ActivityPeriodsOf(QuestionTemplate): 
     """
     Ex: What is the activity period of Amy Winehouse?
-        In what years 
-        Active years of 
+        In what years did Amy Winehouse performed?
+        Active years of Amy Winehouse
     """
-    regex = Lemmas("what be") + Pos("DT") + Lemmas("activity period") + Pos("IN") + Person() + Question(Pos("."))
-
+    regex1 = Lemmas("what be") + Pos("DT") + Lemmas("activity period") + Pos("IN") + Person() + Question(Pos("."))
+    regex2 = Lemmas("active") + Lemma("years") + Pos("IN") + Person() + Question(Pos("."))
+    regex3 = Pos("IN") + Lemma("what") + Lemma("years") + Lemma("do") + Person() + Lemma("perform") +  Question(Pos("."))
+    regex = regex1 | regex2 | regex3
     def interpret(self, match):
         
         periodEnd = ActivityPeriodEndOf(match.person)
