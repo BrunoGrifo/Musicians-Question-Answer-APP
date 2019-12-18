@@ -15,6 +15,7 @@ import sys
 import time
 import random
 import datetime
+import pandas as pd
 
 import quepy
 from SPARQLWrapper import SPARQLWrapper, JSON
@@ -73,6 +74,54 @@ def print_literal(results, target, metadata=None):
             except:
                 print "*****Encoding error*****"
 
+def print_period(results, target, metadata=None):
+    c=True
+    entries = target.replace("?","").split(" ")
+    for target in entries:
+        for result in results["results"]["bindings"]:
+            if result[target]["type"] == u"typed-literal":
+                if(c):
+                    label = result[target]["value"]
+                    c=False
+                else:
+                    label = label +" - " + result[target]["value"]
+    print(label)
+
+
+
+def print_musicAlbum(results, target, metadata=None):
+    music = []
+    album = []
+    entries = target.replace("?","").split(" ")
+    for target in entries:
+        for result in results["results"]["bindings"]:
+            if result[target]["type"] == u"uri":
+                label = result[target]["value"]
+                music.append(label.replace("-","").split("/")[-1])
+                # try:
+                #     print label
+                # except:
+                #     print "*****Encoding error*****"
+            if result[target]["type"] == u"typed-literal":
+                label = result[target]["value"]
+                music.append(label.replace("-",""))
+                # try:
+                #     print label
+                # except:
+                #     print "*****Encoding error*****"
+            
+            if result[target]["type"] == u"literal":
+                label = result[target]["value"]
+                album.append(label.replace("-",""))
+                # try:
+                #     print label
+                # except:
+                #    print "*****Encoding error*****"
+    data = {"Album":album,"Music":music}
+    df = pd.DataFrame(data)
+    df = df.reindex(columns=["Music","Album"])
+    print(df)
+
 
 def print_age(results, target, metadata=None):
     assert len(results["results"]["bindings"]) == 1
@@ -113,6 +162,8 @@ if __name__ == "__main__":
         "literal": print_literal,
         "age": print_age,
         "musics": print_musics,
+        "MA": print_musicAlbum,
+        "period": print_period,
     }
 
     for question in questions:

@@ -1,1 +1,1 @@
-{u'head': {u'link': [], u'vars': [u'x2', u'x3']}, u'results': {u'distinct': False, u'bindings': [], u'ordered': True}}
+{u'head': {u'link': [], u'vars': [u'x1', u'x2']}, u'results': {u'distinct': False, u'bindings': [{u'x2': {u'datatype': u'http://www.w3.org/2001/XMLSchema#gYear', u'type': u'typed-literal', u'value': u'2011'}, u'x1': {u'datatype': u'http://www.w3.org/2001/XMLSchema#gYear', u'type': u'typed-literal', u'value': u'2003'}}], u'ordered': True}}

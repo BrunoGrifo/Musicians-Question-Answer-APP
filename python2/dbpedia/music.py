@@ -282,12 +282,11 @@ class ActivityPeriodsOf(QuestionTemplate):
     regex = Lemmas("what be") + Pos("DT") + Lemmas("activity period") + Pos("IN") + Person() + Question(Pos("."))
 
     def interpret(self, match):
-        """
+        
         periodEnd = ActivityPeriodEndOf(match.person)
         periodStart = ActivityPeriodStartOf(match.person)
-        period = [periodStart,periodEnd]
-        """
-        return [ActivityPeriodStartOf(match.person),ActivityPeriodEndOf(match.person)], "literal"
+        #period = [periodStart,periodEnd]
+        return [ActivityPeriodStartOf(match.person), ActivityPeriodEndOf(match.person)], "period"
 
 class CauseDeathsOf(QuestionTemplate): #-----------------------DONE
     """
@@ -373,7 +372,7 @@ class MusicsOf(QuestionTemplate):
         artist = ArtistOf(match.person)
         musics = MusicTitleOf(artist)
         albums = AlbumTitleOf(artist)
-        return [musics, albums],"musics"
+        return [musics, albums],"MA"
 
 
 class Album(Particle):
