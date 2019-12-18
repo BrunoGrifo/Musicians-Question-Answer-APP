@@ -92,6 +92,7 @@ def print_period(results, target, metadata=None):
 def print_musicAlbum(results, target, metadata=None):
     music = []
     album = []
+    f = open("output.txt",'w')
     entries = target.replace("?","").split(" ")
     for target in entries:
         for result in results["results"]["bindings"]:
@@ -120,6 +121,7 @@ def print_musicAlbum(results, target, metadata=None):
     data = {"Album":album,"Music":music}
     df = pd.DataFrame(data)
     df = df.reindex(columns=["Music","Album"])
+    print >>f, df.to_string()
     print(df)
 
 
@@ -170,7 +172,7 @@ if __name__ == "__main__":
         print question
         print "-" * len(question)
         target, query, metadata = dbpedia.get_query(question)
-        print query
+        #print query
         if isinstance(metadata, tuple):
             query_type = metadata[0]
             metadata = metadata[1]
@@ -190,8 +192,7 @@ if __name__ == "__main__":
             sparql.setQuery(query)
             sparql.setReturnFormat(JSON)
             results = sparql.query().convert()
-            f = open("output.txt",'w')
-            print >>f, results
+            
             
 
             if not results["results"]["bindings"]:

@@ -28,7 +28,7 @@ class Band(Particle):
 
     def interpret(self, match):
         name = match.words.tokens.title()
-        print(name)
+        #print(name)
         name = name.replace("List ","")
         name = name.replace(" list","")
         return HasKeyword(name)
@@ -40,7 +40,7 @@ class Person(Particle):
     def interpret(self, match):
         name = match.words.tokens
         name = name.replace(" music","")
-        print(name)
+        #print(name)
         return HasKeyword(name)
 
 
