@@ -121,8 +121,8 @@ def print_musicAlbum(results, target, metadata=None):
     data = {"Album":album,"Music":music}
     df = pd.DataFrame(data)
     df = df.reindex(columns=["Music","Album"])
-    print >>f, df.to_string()
-    print(df)
+    print >> f, df.to_string().encode('utf-8')
+    print(df.to_string().encode('utf-8'))
 
 
 def print_age(results, target, metadata=None):
@@ -172,7 +172,7 @@ if __name__ == "__main__":
         print question
         print "-" * len(question)
         target, query, metadata = dbpedia.get_query(question)
-        #print query
+        print query
         if isinstance(metadata, tuple):
             query_type = metadata[0]
             metadata = metadata[1]

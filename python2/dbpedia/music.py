@@ -19,7 +19,28 @@ from dsl import IsBand, LabelOf, IsMemberOf, ActiveYears, MusicGenreOf, \
     InstrumentOf, OccupationOf, BirthDateOf, ActivityPeriodEndOf, ActivityPeriodStartOf, CauseDeathOf, DayDeathOf, TitleOf, CauseDeathName, ArtistOf, AlbumTitleOf, MusicTitleOf
 
 
-#-------------------------------PARTICLES--------------------------------------------------------------------
+class Album(Particle):
+    regex = Plus(Pos("NN") | Pos("NNS") | Pos("NNP") | Pos("NNPS") | Pos("VB") | Pos("DT") | \
+            Pos("VBG") | Pos("CC") | Pos("IN") | Pos("CD") | Pos("PRP") | Pos("POS") | Pos(".") | \
+            Pos("TO") | Pos("JJ") | Pos("JJS")| Pos(":") | Pos(")") | Pos("("))
+
+    def interpret(self, match):
+        name = match.words.tokens
+        if((name[-1]==".") | (name[-1]=="?")):
+            name = name[:-2]
+        name = name.replace(" ?","")
+        name = name.replace("?","")
+        print(name)
+        return HasKeyword(name)
+
+class Person(Particle):
+    regex = Plus(Pos("NN") | Pos("NNS") | Pos("NNP") | Pos("NNPS"))
+
+    def interpret(self, match):
+        name = match.words.tokens
+        name = name.replace(" music","")
+        #print(name)
+        return HasKeyword(name)
 
 
 class Band(Particle):
@@ -34,32 +55,11 @@ class Band(Particle):
         return HasKeyword(name)
 
 
-class Person(Particle):
-    regex = Plus(Pos("NN") | Pos("NNS") | Pos("NNP") | Pos("NNPS"))
-
-    def interpret(self, match):
-        name = match.words.tokens
-        name = name.replace(" music","")
-        #print(name)
-        return HasKeyword(name)
-
-
-#---------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
 class BandMembersQuestion(QuestionTemplate): #---------------------DONE
 
     """
     Regex for questions about band member.
-    Ex: "Radiohead members"
+    Ex: "List Radiohead members"
         "What are the members of Metallica?"
     """
 
@@ -118,7 +118,7 @@ class AlbumsOfQuestion(QuestionTemplate): #--------------------------------DONE
 
 class WhoIs(QuestionTemplate):  #-----------------------------Done
     """
-    Ex: "Who is Tom Cruise?"
+    Ex: "Who is Steven Tyler?"
     """
     regex = Lemma("who") + Lemma("be") + Person() + Question(Pos("."))
 
@@ -166,7 +166,7 @@ class ChildrenOf(QuestionTemplate): #-----------------------------DONE
     """
     Ex: Who are the sons/girls of Steven Tyler?
         Who are Steven Tyler's children?
-        List Steven Tyler's children
+        "List Steven Tyler's children"
     """
     regex1 = Lemmas("who be") + Person() + Question((Pos("POS") + Pos("NN"))) + (
                 Lemma("son") | Lemma("child") | Lemma("girl")) + Question(Pos("."))
@@ -182,8 +182,8 @@ class ChildrenOf(QuestionTemplate): #-----------------------------DONE
 class GenresOf(QuestionTemplate):  # --------------------------- DONE
     """
     Ex: What are the music genres of Michael Jackson?
-        List Micheal Jackson music genres
-        List the muric genres of Michael Jackson
+        List Michael Jackson music genres
+        List the music genres of Michael Jackson
         What genres do Michael Jackson play?
         
     """
@@ -202,8 +202,8 @@ class GenresOf(QuestionTemplate):  # --------------------------- DONE
 class BirthNamesOf(QuestionTemplate): #------------------------DONE
     """
     Ex: What is the real name of Eminem?
-        What is Eminem's real name?
-        what is Eminem's birth name?
+        "What is Eminem's real name?"
+        "what is Eminem's birth name?"
         what is the birth name of Eminem?
     """
     regex1 = Lemmas("what be") + Pos("DT") + (Lemmas("real name") | Lemmas("birth name")) + Pos("IN") + Person() + Question(Pos("."))
@@ -212,6 +212,10 @@ class BirthNamesOf(QuestionTemplate): #------------------------DONE
     def interpret(self, match):
         birth = BirthNameOf(match.person)
         return [birth], "define"
+
+
+
+
 
 class InstrumentsOf(QuestionTemplate): #-------------------------DONE
     """
@@ -236,11 +240,11 @@ class OccupationsOf(QuestionTemplate): #--------------------DONE
     Ex: What are the occupations of Jennifer Lopez?
         What does Jennifer Lopez do?
         What are Jennifer Lopez other jobs?
-        What does Jennifer Lopez do besides <verb>?
+        What does Jennifer Lopez do besides <verb(acting, performing...)>?
         What is Jennifer Lopez profession?
         What does Jennifer Lopez do for living?
         What is Jennifer Lopez known for?
-        What are Jennifer Lopez's occupations?
+        "What are Jennifer Lopez's occupations?"
         List Jennifer Lopez occupations
         List Jennifer Lopez other jobs
         List Jennifer Lopez professions
@@ -325,50 +329,31 @@ class DayDeathsOf(QuestionTemplate): #-----------------------------DONE +-
 
 class AlbumsOf(QuestionTemplate): #-----------------Done
     """
-    Ex: List all Michael Jackson's albums
+    Ex: "List all Michael Jackson's albums"
         List all albums performed by Michael Jackson
         List all albums of Michael Jackson
-        what are the albums of Michael Jackson
+        What are the albums of Michael Jackson
 
     """
     regex1 = Lemma("list") + Question(Lemma("all")) + (Person() | Band()) + Question(Pos("POS") + Pos("NN")) + Lemma("album") + Question(Pos("."))
     regex2 = Lemma("list") + Question(Lemma("all")) + Lemma("album") + Question(Lemma("perform")) + Pos("IN") + (Person() | Band()) + Question(Pos("."))
-    regex3 = Lemmas("what be") + Pos("DT") + Lemma("album") + Pos("IN") + Person() + Question(Pos("."))
+    regex3 = Lemmas("what be") + Pos("DT") + Lemma("album") + Pos("IN") + (Person() | Band()) + Question(Pos("."))
     regex = regex1 | regex2 | regex3
     def interpret(self, match):
         artist = ArtistOf(match.person)
         albums = AlbumTitleOf(artist)
         return [albums],"enum"
 
-
-# class MusicsOf(QuestionTemplate): 
-#     """
-#     Ex: List all Michael Jackson's musics
-#         List all musics performed by Michael Jackson
-#         What are the musics of Michael Jackson
-
-#     """
-#     regex1 = Lemma("list") + Question(Lemma("all")) + (Person() | Band()) +  Question(Pos("POS") + Pos("NN"))  + Lemma("music") + Question(Pos("."))
-#     regex2 = Lemma("list") + Question(Lemma("all")) + Lemma("music") + Question(Lemma("perform")) + Pos("IN") + (Person() | Band()) + Question(Pos("."))
-#     regex3 = Lemmas("what be") + Pos("DT") + Lemma("music") + Pos("IN") + Person() + Question(Pos("."))
-#     regex = regex1 | regex2 | regex3
-#     def interpret(self, match):
-#         artist = ArtistOf(match.person)
-#         musics = MusicTitleOf(artist)
-
-#         return [musics],"musics"
-
-
 class MusicsOf(QuestionTemplate): 
     """
-    Ex: List all Michael Jackson's musics
+    Ex: "List all Michael Jackson's musics"
         List all musics performed by Michael Jackson
         What are the musics of Michael Jackson
 
     """
     regex1 = Lemma("list") + Question(Lemma("all")) + (Person() | Band()) +  Question(Pos("POS") + Pos("NN"))  + Lemma("music") + Question(Pos("."))
     regex2 = Lemma("list") + Question(Lemma("all")) + Lemma("music") + Question(Lemma("perform")) + Pos("IN") + (Person() | Band()) + Question(Pos("."))
-    regex3 = Lemmas("what be") + Pos("DT") + Lemma("music") + Pos("IN") + Person() + Question(Pos("."))
+    regex3 = Lemmas("what be") + Pos("DT") + Lemma("music") + Pos("IN") + (Person() | Band()) + Question(Pos("."))
     regex = regex1 | regex2 | regex3
     def interpret(self, match):
         artist = ArtistOf(match.person)
@@ -377,29 +362,15 @@ class MusicsOf(QuestionTemplate):
         return [musics, albums],"MA"
 
 
-class Album(Particle):
-    regex = Plus(Pos("NN") | Pos("NNS") | Pos("NNP") | Pos("NNPS") | Pos("VB") | Pos("DT") | \
-            Pos("VBG") | Pos("CC") | Pos("IN") | Pos("CD") | Pos("PRP") | Pos("POS") | Pos(".") | \
-            Pos("TO") | Pos("JJ") | Pos("JJS")| Pos(":") | Pos(")") | Pos("("))
-
-    def interpret(self, match):
-        name = match.words.tokens
-        if((name[-1]==".") | (name[-1]=="?")):
-            name = name[:-2]
-        name = name.replace(" ?","")
-        name = name.replace("?","")
-        print(name)
-        return HasKeyword(name)
-
 class MusicOfAlbum(QuestionTemplate): 
     """
-    Ex: List all music of Looking Back to Yesterday
-        What are the musics of Looking Back to Yesterday
-        What musics compose Looking Back to Yesterday
+    Ex: List all music of the album Looking Back to Yesterday
+        What are the musics of the album Looking Back to Yesterday 
+        What musics compose the album Looking Back to Yesterday
     """
-    regex1 = Lemma("list") + Question(Lemma("all")) + Lemma("music") + Pos("IN") + Album() + Question(Pos("."))
-    regex2 = Lemmas("what be") + Pos("DT") + Lemma("music") + Pos("IN") + Album() + Question(Pos("."))
-    regex3 = Lemma("what") + Lemma("musics") + Lemma("compose") + Album() + Question(Pos("."))
+    regex1 = Lemma("list") + Question(Lemma("all")) + Lemma("music") + Pos("IN") + Pos("DT") + Lemma("album") + Album() + Question(Pos("."))
+    regex2 = Lemmas("what be") + Pos("DT") + Lemma("music") + Pos("IN") + Pos("DT") + Lemma("album") + Album() + Question(Pos("."))
+    regex3 = Lemma("what") + Lemma("musics") + Lemma("compose") + Pos("DT") + Lemma("album") + Album() + Question(Pos("."))
     regex = regex1 | regex2 | regex3
     def interpret(self, match):
         print(match.__str__())
