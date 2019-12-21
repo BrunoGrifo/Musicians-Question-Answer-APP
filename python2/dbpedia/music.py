@@ -33,29 +33,61 @@ class Album(Particle):
         print(name)
         return HasKeyword(name)
 
-class Person(Particle):
-    regex = Plus(Pos("NN") | Pos("NNS") | Pos("NNP") | Pos("NNPS"))
-
-    def interpret(self, match):
-        name = match.words.tokens
-        name = name.replace(" music","")
-        #print(name)
-        return HasKeyword(name)
-
-
+#Aproveitado do Quepy
 class Band(Particle):
     regex = Question(Pos("DT")) + Plus(Pos("NN") | Pos("NNP"))
     #regex = Question(Pos("DT")) +  Pos("NNP")
 
     def interpret(self, match):
         name = match.words.tokens.title()
-        #print(name)
         name = name.replace("List ","")
         name = name.replace(" list","")
         return HasKeyword(name)
 
+#Aproveitado do Quepy
+class Person(Particle):
+    regex = Plus(Pos("NN") | Pos("NNS") | Pos("NNP") | Pos("NNPS"))
 
-class BandMembersQuestion(QuestionTemplate): #---------------------DONE
+    def interpret(self, match):
+        name = match.words.tokens
+        name = name.replace(" music","")
+        return HasKeyword(name)
+
+
+class GenresOf(QuestionTemplate): 
+    """
+    Ex: What are the music genres of Michael Jackson?
+        List Michael Jackson music genres
+        List the music genres of Michael Jackson
+        What genres do Michael Jackson play? 
+    """
+    regex1 = Lemmas("what be") + Pos("DT") + (Lemmas("music genre") | Lemma("genre")) \
+        + Pos("IN") + (Person() | Band()) + Question(Pos("."))
+
+    regex2 = Lemma("list")  +  (Person() | Band()) + (Lemmas("music genre") | Lemma("genre")) \
+         + Question(Pos("."))
+
+    regex3 = Lemma("list")  + Pos("DT") + (Lemmas("music genre") | Lemma("genre")) \
+        + Pos("IN") +  (Person() | Band()) + Question(Pos("."))
+
+    regex4 = Question(Pos("WP") + Lemma("be") + Pos("DT"))
+    regex5 = regex4 + Question(Lemma("music")) + Lemma("genre") + Pos("IN") + (Person() | Band())\
+        + Question(Pos("."))
+
+    regex6 = Lemmas("what genres do") + (Person() | Band()) + Lemma("play") + Question(Pos(".")) 
+    
+    regex = regex1 | regex2 | regex3 | regex4 | regex5 | regex6
+    
+    def interpret(self, match):
+        genre= GenreOf(match.person)
+        label = LabelOf(genre)
+        return [label], "enum"
+
+
+
+
+#Aproveitado do Quepy e alterado
+class BandMembersQuestion(QuestionTemplate):
 
     """
     Regex for questions about band member.
@@ -73,13 +105,12 @@ class BandMembersQuestion(QuestionTemplate): #---------------------DONE
     regex = (regex1 | regex2 | regex3 | regex4| regex5) + Question(Pos("."))
 
     def interpret(self, match):
-        #.replace("List","")
         member = IsMemberOf(match.band)
         label = LabelOf(member)
         return [label], "enum"
 
 
-class FoundationQuestion(QuestionTemplate):  #------------------------------DONE
+class FoundationQuestion(QuestionTemplate):  
     """
     Regex for questions about the creation of a band.
     Ex: "When was Pink Floyd founded?"
@@ -89,15 +120,17 @@ class FoundationQuestion(QuestionTemplate):  #------------------------------DONE
     """
 
     regex1 = Pos("WRB") + Lemma("be") + Band() + (Lemma("form") | Lemma("found")) + Question(Pos("."))
-    regex2 = Lemmas("what be") + Pos("DT") + Lemmas("foundation year") + Pos("IN") + Band() + Question(Pos(".")) ############################################
-    regex3 = Lemmas("in what year be") + Band() + Lemma("found") + Question(Pos(".")) ############################################################
+    regex2 = Lemmas("what be") + Pos("DT") + Lemmas("foundation year") + Pos("IN") + Band() + Question(Pos(".")) 
+    regex3 = Lemmas("in what year be") + Band() + Lemma("found") + Question(Pos(".")) 
 
     regex = regex1 | regex2 | regex3
     def interpret(self, match):
         active_years = ActiveYears(match.band)
         return [active_years], "literal"
 
-class AlbumsOfQuestion(QuestionTemplate): #--------------------------------DONE
+
+#Aproveitado do Quepy e melhorado
+class AlbumsOfQuestion(QuestionTemplate): 
     """
     Ex: "List albums of Pink Floyd"
         "What albums did Pearl Jam record?"
@@ -116,11 +149,16 @@ class AlbumsOfQuestion(QuestionTemplate): #--------------------------------DONE
         return [name], "enum"
 
 
-class WhoIs(QuestionTemplate):  #-----------------------------Done
+class WhoIs(QuestionTemplate):  #-----------------------------Not done
     """
-    Ex: "Who is Steven Tyler?"
+    Ex: "Who is Steven Tyler?" ----------
+        "tell me about"
+        "Person"
     """
-    regex = Lemma("who") + Lemma("be") + Person() + Question(Pos("."))
+    regex1 = Lemma("who") + Lemma("be") + (Person() | Band()) + Question(Pos("."))
+    regex2 = (Person() | Band())
+    regex3 = Lemma("tell") + Lemma("me") + Lemma("about") + (Person() | Band()) + Question(Pos("."))
+    regex = regex1 | regex2 | regex3
 
 
     def interpret(self, match):
@@ -128,7 +166,7 @@ class WhoIs(QuestionTemplate):  #-----------------------------Done
         return [definition], "define"
 
 
-class WhereIsFromQuestion(QuestionTemplate): #-----------------------------DONE
+class WhereIsFromQuestion(QuestionTemplate):
     """
     Ex: "Where is Bill Gates from?"
     Ex: "Where was Whitney Houston born?"
@@ -146,7 +184,7 @@ class WhereIsFromQuestion(QuestionTemplate): #-----------------------------DONE
         return [label], "enum"
 
 
-class ParentsOf(QuestionTemplate): #-----------------------------------DONE
+class ParentsOf(QuestionTemplate):
     """
     Ex: "Who are Liv Tyler parents?"
         "Who are Liv Tyler's parents?"
@@ -162,7 +200,7 @@ class ParentsOf(QuestionTemplate): #-----------------------------------DONE
         return [label], "define"
 
 
-class ChildrenOf(QuestionTemplate): #-----------------------------DONE
+class ChildrenOf(QuestionTemplate): 
     """
     Ex: Who are the sons/girls of Steven Tyler?
         Who are Steven Tyler's children?
@@ -179,27 +217,11 @@ class ChildrenOf(QuestionTemplate): #-----------------------------DONE
         label = LabelOf(child)
         return [label], "define"
 
-class GenresOf(QuestionTemplate):  # --------------------------- DONE
-    """
-    Ex: What are the music genres of Michael Jackson?
-        List Michael Jackson music genres
-        List the music genres of Michael Jackson
-        What genres do Michael Jackson play?
-        
-    """
-    regex1 = Lemmas("what be") + Pos("DT") + (Lemmas("music genre") | Lemma("genre")) + Pos("IN") + Person() + Question(Pos("."))
-    regex2 = Lemma("list")  +  Person() + (Lemmas("music genre") | Lemma("genre")) + Question(Pos("."))
-    regex3 = Lemma("list")  + Pos("DT") + (Lemmas("music genre") | Lemma("genre")) + Pos("IN") +  Person()
-    regex4 = Question(Pos("WP") + Lemma("be") + Pos("DT"))
-    regex5 = regex4 + Question(Lemma("music")) + Lemma("genre") + Pos("IN") + Band() + Question(Pos("."))
-    regex6 = Lemmas("what genres do") + Person() + Lemma("play") + Question(Pos(".")) 
-    regex = regex1 | regex2 | regex3 | regex4 | regex5 | regex6
-    def interpret(self, match):
-        genre= GenreOf(match.person)
-        label = LabelOf(genre)
-        return [label], "enum"
 
-class BirthNamesOf(QuestionTemplate): #------------------------DONE
+
+
+
+class BirthNamesOf(QuestionTemplate):
     """
     Ex: What is the real name of Eminem?
         "What is Eminem's real name?"
@@ -217,13 +239,11 @@ class BirthNamesOf(QuestionTemplate): #------------------------DONE
 
 
 
-class InstrumentsOf(QuestionTemplate): #-------------------------DONE
+class InstrumentsOf(QuestionTemplate):
     """
     Ex: What instruments does Dave Grohl play? 
-        List the instruments that Dave Grohl plays    ------------------------why?
+        List the instruments that Dave Grohl plays    NOT WORKING
         What are the instruments that Dave Grohl is known for?
-
-
 
     """
     regex1 = (Lemma("what") | Lemma("which")) + Lemma("instrument") + Question(Lemma("do")) + Person() + Lemma("play") + Question(Pos("."))
@@ -235,7 +255,7 @@ class InstrumentsOf(QuestionTemplate): #-------------------------DONE
         instrument = InstrumentOf(match.person)
         return [instrument],"literal"
 
-class OccupationsOf(QuestionTemplate): #--------------------DONE 
+class OccupationsOf(QuestionTemplate):
     """
     Ex: What are the occupations of Jennifer Lopez?
         What does Jennifer Lopez do?
@@ -264,7 +284,7 @@ class OccupationsOf(QuestionTemplate): #--------------------DONE
         title = TitleOf(occupation)
         return [title], "literal"
 
-class BirthDatesOf(QuestionTemplate):  #------------------------Done
+class BirthDatesOf(QuestionTemplate): 
     """
     Ex: When was Justin Bieber born?
         When was the day Justin Bieber was born?
@@ -294,7 +314,7 @@ class ActivityPeriodsOf(QuestionTemplate):
         #period = [periodStart,periodEnd]
         return [ActivityPeriodStartOf(match.person), ActivityPeriodEndOf(match.person)], "period"
 
-class CauseDeathsOf(QuestionTemplate): #-----------------------DONE
+class CauseDeathsOf(QuestionTemplate): #-----------------------EEEERRRRRRRRRRRRORRRRRRRRR
     """
     Ex: What was the cause of death of Amy Winehouse?
         How did Amy Winehouse die?
@@ -308,7 +328,7 @@ class CauseDeathsOf(QuestionTemplate): #-----------------------DONE
         name = CauseDeathName(causedeath)
         return [name], "literal"
 
-class DayDeathsOf(QuestionTemplate): #-----------------------------DONE +-
+class DayDeathsOf(QuestionTemplate):
     """
     Ex: When did Amy Winehouse died?
         What was the death day of Amy Winehouse?
@@ -326,8 +346,8 @@ class DayDeathsOf(QuestionTemplate): #-----------------------------DONE +-
         daydeath = DayDeathOf(match.person)
         return [daydeath],"literal"
 
-
-class AlbumsOf(QuestionTemplate): #-----------------Done
+#Extensão da pergunta do template de Albums em cima (não está duplicado! não reparamos que já tinhamos um template)
+class AlbumsOf(QuestionTemplate):
     """
     Ex: "List all Michael Jackson's albums"
         List all albums performed by Michael Jackson

@@ -5,6 +5,10 @@
 # This file is part of quepy and is distributed under the Modified BSD License.
 # You should have received a copy of license in the LICENSE file.
 
+# Authors: Rafael Carrascosa <rcarrascosa@machinalis.com>
+#          Gonzalo Garcia Berrotaran <ggarcia@machinalis.com>
+
+
 #Save quepy files
 #/Users/brunogrifo/opt/anaconda3/envs/conda-env/lib/python2.7/site-packages/quepy/save
 """
@@ -16,6 +20,7 @@ import time
 import random
 import datetime
 import pandas as pd
+import nltk
 
 import quepy
 from SPARQLWrapper import SPARQLWrapper, JSON
@@ -25,7 +30,7 @@ dbpedia = quepy.install("dbpedia")
 
 # quepy.set_loglevel("DEBUG")
 
-
+#Aproveitado do Quepy
 def print_define(results, target, metadata=None):
     for result in results["results"]["bindings"]:
         if result[target]["xml:lang"] == "en":
@@ -34,10 +39,9 @@ def print_define(results, target, metadata=None):
             except:
                 print 
 
-
+#Aproveitado do Quepy
 def print_enum(results, target, metadata=None):
     used_labels = []
-
     for result in results["results"]["bindings"]:
         if result[target]["type"] == u"literal":
             if result[target]["xml:lang"] == "en":
@@ -49,6 +53,7 @@ def print_enum(results, target, metadata=None):
                     except:
                         print "*****Encoding error*****"
 
+
 def print_musics(results, target, metadata=None):
     used_labels = []
     for result in results["results"]["bindings"]:
@@ -59,7 +64,8 @@ def print_musics(results, target, metadata=None):
                 print label
             except:
                 print "*****Encoding error*****"
-    
+
+#Aproveitado do Quepy   
 def print_literal(results, target, metadata=None):
     for result in results["results"]["bindings"]:
         literal = result[target]["value"]
@@ -125,25 +131,6 @@ def print_musicAlbum(results, target, metadata=None):
     print(df.to_string().encode('utf-8'))
 
 
-def print_age(results, target, metadata=None):
-    assert len(results["results"]["bindings"]) == 1
-
-    birth_date = results["results"]["bindings"][0][target]["value"]
-    year, month, days = birth_date.split("-")
-
-    birth_date = datetime.date(int(year), int(month), int(days))
-
-    now = datetime.datetime.utcnow()
-    now = now.date()
-
-    age = now - birth_date
-    try:
-        print "{} years old".format(age.days / 365)
-    except:
-        print "*****Encoding error*****"
-
-
-
 if __name__ == "__main__":
    
     if "-d" in sys.argv:
@@ -154,15 +141,28 @@ if __name__ == "__main__":
         question = " ".join(sys.argv[1:])
         questions = [question]
     else:
-        print quepy.nltktagger.run_nltktagger(u"In what years did Amy Winehouse performed?", nltk_data_path=None)
-        print("You have to give me a question my dude!")
+        print quepy.nltktagger.run_nltktagger(u"tell me about Steven Tyler", nltk_data_path=None)
+        #print("You have to give me a question my dude!")
+        # groucho_grammar = nltk.CFG.fromstring("""
+        # S -> NP VP
+        # PP -> P NP
+        # NP -> Det N | Det N PP | 'I'
+        # VP -> V NP | VP PP
+        # Det -> 'an' | 'my'
+        # N -> 'elephant' | 'pajamas'
+        # V -> 'shot'
+        # P -> 'in'
+        # """)
+        # sent = ['What', 'are', 'the', 'musics', 'of', 'the', 'album', 'Looking', 'Back', 'to', 'Yesterday']
+        # parser = nltk.ChartParser(groucho_grammar)
+        # for tree in parser.parse(sent):
+        #     print(tree)
         sys.exit()
 
     print_handlers = {
         "define": print_define,
         "enum": print_enum,
         "literal": print_literal,
-        "age": print_age,
         "musics": print_musics,
         "MA": print_musicAlbum,
         "period": print_period,
@@ -172,7 +172,7 @@ if __name__ == "__main__":
         print question
         print "-" * len(question)
         target, query, metadata = dbpedia.get_query(question)
-        print query
+        #print query
         if isinstance(metadata, tuple):
             query_type = metadata[0]
             metadata = metadata[1]
@@ -199,6 +199,7 @@ if __name__ == "__main__":
                 print "No answer found :("
                 continue
         #print(results)
+        
         """
         print("--------------------------------------------------Entrou")
         print(metadata[0])
