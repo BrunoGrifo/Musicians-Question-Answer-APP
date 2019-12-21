@@ -1,151 +1,244 @@
-                                                 Music                        Album
-0                                 Rusted_from_the_Rain             Billy Talent III
-1                                       Turn_Your_Back             Billy Talent III
-2                                 Devil_on_My_Shoulder             Billy Talent III
-3            List_of_Canadian_numberone_albums_of_2009             Billy Talent III
-4                                       Saint_Veronika             Billy Talent III
-5                                Diamond_on_a_Landmine             Billy Talent III
-6                                 Devil on My Shoulder             Billy Talent III
-7                         Bloody Nails + Broken Hearts             Billy Talent III
-8                                Definition of Destiny             Billy Talent III
-9                                Don't Need To Pretend             Billy Talent III
-10                               Don't Need to Pretend             Billy Talent III
-11                                 Pocketful of Dreams             Billy Talent III
-12                                    Sudden Movements             Billy Talent III
-13                                     Tears into Wine             Billy Talent III
-14                              The Dead Can't Testify             Billy Talent III
-15                                      Turn Your Back             Billy Talent III
-16                                      White Sparrows             Billy Talent III
-17                                       Fallen_Leaves              Billy Talent II
-18                            Devil_in_a_Midnight_Mass              Billy Talent II
-19                       Surrender_(Billy_Talent_song)              Billy Talent II
-20                                     Red_Flag_(song)              Billy Talent II
-21   Ever_Fallen_in_Love_(With_Someone_You_Shouldn'...              Billy Talent II
-22                                      This_Suffering              Billy Talent II
-23                                            Sympathy              Billy Talent II
-24                                       Perfect World              Billy Talent II
-25                                            Red Flag              Billy Talent II
-26                                       Fallen Leaves              Billy Talent II
-27                            When I Was a Little Girl              Billy Talent II
-28                                         Beach Balls              Billy Talent II
-29                                   Burn the Evidence              Billy Talent II
-30                                Covered in Cowardice              Billy Talent II
-31                            Devil in a Midnight Mass              Billy Talent II
-32                                    Pins and Needles              Billy Talent II
-33                                       The Navy Song              Billy Talent II
-34                                  Where Is the Line?              Billy Talent II
-35                                         Worker Bees              Billy Talent II
-36                            Surprise_Surprise_(song)                 Dead Silence
-37                                  Viking_Death_March                 Dead Silence
-38                                    Stand_Up_and_Run                 Dead Silence
-39                                     Show Me the Way                 Dead Silence
-40                                        Dead Silence                 Dead Silence
-41                                          Man Alive!                 Dead Silence
-42                                 Hanging by a Thread                 Dead Silence
-43                                       Crooked Minds                 Dead Silence
-44                                  Cure for the Enemy                 Dead Silence
-45                           Don't Count on the Wicked                 Dead Silence
-46                           Lonely Road to Absolution                 Dead Silence
-47                               Love Was Still Around                 Dead Silence
-48                           Runnin' Across the Tracks                 Dead Silence
-49                           Swallowed Up by the Ocean                 Dead Silence
-50                                       The_Ex_(song)  Live From the UK Sept./2006
-51                            Devil_in_a_Midnight_Mass  Live From the UK Sept./2006
-52                                         River_Below  Live From the UK Sept./2006
-53                       Surrender_(Billy_Talent_song)  Live From the UK Sept./2006
-54                                     Red_Flag_(song)  Live From the UK Sept./2006
-55                 Nothing_to_Lose_(Billy_Talent_song)  Live From the UK Sept./2006
-56                                         Try_Honesty  Live From the UK Sept./2006
-57                                      This_Suffering  Live From the UK Sept./2006
-58                                           Surrender  Live From the UK Sept./2006
-59                                            Sympathy  Live From the UK Sept./2006
-60                                              Encore  Live From the UK Sept./2006
-61                                Standing in the Rain  Live From the UK Sept./2006
-62                                     Nothing to Lose  Live From the UK Sept./2006
-63                                       Perfect World  Live From the UK Sept./2006
-64                                    Cut the Curtains  Live From the UK Sept./2006
-65                                       Line & Sinker  Live From the UK Sept./2006
-66                                  Prisoners of Today  Live From the UK Sept./2006
-67                                            Red Flag  Live From the UK Sept./2006
-68                                         River Below  Live From the UK Sept./2006
-69                                              The Ex  Live From the UK Sept./2006
-70                                 This Is How It Goes  Live From the UK Sept./2006
-71                                         Try Honesty  Live From the UK Sept./2006
-72                                       Fallen Leaves  Live From the UK Sept./2006
-73                                   Burn the Evidence  Live From the UK Sept./2006
-74                                         Worker Bees  Live From the UK Sept./2006
-75                            Devil In A Midnight Mass  Live From the UK Sept./2006
-76                                      This Suffering  Live From the UK Sept./2006
-77                                       The_Ex_(song)                 Billy Talent
-78                                         River_Below                 Billy Talent
-79                 Nothing_to_Lose_(Billy_Talent_song)                 Billy Talent
-80                                         Try_Honesty                 Billy Talent
-81                                                Lies                 Billy Talent
-82                                Standing in the Rain                 Billy Talent
-83                                     Nothing to Lose                 Billy Talent
-84                                    Cut the Curtains                 Billy Talent
-85                                       Line & Sinker                 Billy Talent
-86                               Living in the Shadows                 Billy Talent
-87                                  Prisoners of Today                 Billy Talent
-88                                         River Below                 Billy Talent
-89                                              The Ex                 Billy Talent
-90                                 This Is How It Goes                 Billy Talent
-91                                 This is How It Goes                 Billy Talent
-92                                         Try Honesty                 Billy Talent
-93                                  Voices of Violence                 Billy Talent
-94               Afraid_of_Heights_(Billy_Talent_song)            Afraid of Heights
-95                               Leave Them All Behind            Afraid of Heights
-96                                          The Crutch            Afraid of Heights
-97                                   Afraid of Heights            Afraid of Heights
-98                                         Big Red Gun            Afraid of Heights
-99                                      February Winds            Afraid of Heights
-100                        Ghost Ship of Cannibal Rats            Afraid of Heights
-101                                     Half Past Dead            Afraid of Heights
-102                                  Horses & Chariots            Afraid of Heights
-103                                 Louder than the DJ            Afraid of Heights
-104                               Rabbit Down the Hole            Afraid of Heights
-105                                    This Is Our War            Afraid of Heights
-106                              TimeBomb Ticking Away            Afraid of Heights
-107                               Rusted_from_the_Rain                         Hits
-108                Chasing_the_Sun_(Billy_Talent_song)                         Hits
-109                                      Fallen_Leaves                         Hits
-110                           Surprise_Surprise_(song)                         Hits
-111                                 Viking_Death_March                         Hits
-112                           Devil_in_a_Midnight_Mass                         Hits
-113                                        River_Below                         Hits
-114                                   Stand_Up_and_Run                         Hits
-115                      Surrender_(Billy_Talent_song)                         Hits
-116                               Devil_on_My_Shoulder                         Hits
-117                                    Red_Flag_(song)                         Hits
-118                Nothing_to_Lose_(Billy_Talent_song)                         Hits
-119                                        Try_Honesty                         Hits
-120                                     Kingdom of Zod                         Hits
-121                                        Try_Honesty                  Try Honesty
-122                                   Cut the Curtains                  Try Honesty
-123                              Living in the Shadows                  Try Honesty
-124                                 Prisoners of Today                  Try Honesty
-125                                             The Ex                  Try Honesty
-126                                This Is How It Goes                  Try Honesty
-127                                        Beach Balls                  Try Honesty
-128                                        How It Goes                  Try Honesty
-129                             New_Orleans_Is_Sinking                     Watoosh!
-130                                            Silence                     Watoosh!
-131                                          Fairytale                     Watoosh!
-132                                              Recap                     Watoosh!
-133                                           Absorbed                     Watoosh!
-134                               Bird in the Basement                     Watoosh!
-135                                              M & M                     Watoosh!
-136                         Mother's Native Instrument                     Watoosh!
-137                                               Nita                     Watoosh!
-138                                  Square Root of Me                     Watoosh!
-139                                  Warmth of Windows                     Watoosh!
-140                           When I Was a Little Girl                     Watoosh!
-141                                              Happy                      Dudebox
-142                                             Things                      Dudebox
-143                                  Warmth of Windows                      Dudebox
-144                                            Dudebox                      Dudebox
-145                                     Just A Thought                      Dudebox
-146                             New Orleans Is Sinking                      Dudebox
-147                                       Point Proven                      Dudebox
-148                                              Tuner                      Dudebox
-149                                          You're It                      Dudebox
+                                                 Music                              Album
+0                               Creep_(Radiohead_song)                       My Iron Lung
+1                                                Lewis                       My Iron Lung
+2                                      Lozenge of Love                       My Iron Lung
+3                                         My Iron Lung                       My Iron Lung
+4                                   Permanent Daylight                       My Iron Lung
+5                        Punchdrunk Lovesick Singalong                       My Iron Lung
+6                                        The Trickster                       My Iron Lung
+7                     You Never Wash Up After Yourself                       My Iron Lung
+8                                                    2             COM LAG (2plus2isfive)
+9                                                  Fog             COM LAG (2plus2isfive)
+10                                       Gagging Order             COM LAG (2plus2isfive)
+11                                 I Am Citizen Insane             COM LAG (2plus2isfive)
+12                                 I Am a Wicked Child             COM LAG (2plus2isfive)
+13                                              I Will             COM LAG (2plus2isfive)
+14                                     Paperbag Writer             COM LAG (2plus2isfive)
+15                                       Remyxomatosis             COM LAG (2plus2isfive)
+16                                          Skttrbrain             COM LAG (2plus2isfive)
+17                                 Where Bluebirds Fly             COM LAG (2plus2isfive)
+18                                           Idioteque                              Kid A
+19                       Everything_in_Its_Right_Place                              Kid A
+20                          The_National_Anthem_(song)                              Kid A
+21                              True_Love_Waits_(song)                              Kid A
+22                       Everything in Its Right Place                              Kid A
+23                         How to Disappear Completely                              Kid A
+24                                           Idioteque                              Kid A
+25                                            In Limbo                              Kid A
+26                                               Kid A                              Kid A
+27                                        Morning Bell                              Kid A
+28                           Motion Picture Soundtrack                              Kid A
+29                                          Optimistic                              Kid A
+30                                 The National Anthem                              Kid A
+31                                         Treefingers                              Kid A
+32                              Creep_(Radiohead_song)                        Pablo Honey
+33                                     Stop_Whispering                        Pablo Honey
+34                              Anyone_Can_Play_Guitar                        Pablo Honey
+35                              Anyone Can Play Guitar                        Pablo Honey
+36                                          Banana Co.                        Pablo Honey
+37                                            Blow Out                        Pablo Honey
+38                                         Coke Babies                        Pablo Honey
+39                                               Creep                        Pablo Honey
+40                           Faithless, The Wonder Boy                        Pablo Honey
+41                                         How Do You?                        Pablo Honey
+42                                             I Can't                        Pablo Honey
+43                                      Inside My Head                        Pablo Honey
+44                                         Killer Cars                        Pablo Honey
+45                                              Lurgee                        Pablo Honey
+46                             Million Dollar Question                        Pablo Honey
+47                                  Nothing Touches Me                        Pablo Honey
+48                                         Pop Is Dead                        Pablo Honey
+49                                      Prove Yourself                        Pablo Honey
+50                                             Ripcord                        Pablo Honey
+51                                     Stop Whispering                        Pablo Honey
+52                                          Stupid Car                        Pablo Honey
+53                                  Thinking About You                        Pablo Honey
+54                                           Vegetable                        Pablo Honey
+55                                            Yes I Am                        Pablo Honey
+56                                                 You                        Pablo Honey
+57                                         The Best Of             Radiohead: The Best Of
+58                                       Airbag_(song)                        OK Computer
+59                              Lucky_(Radiohead_song)                        OK Computer
+60                                    Paranoid_Android                        OK Computer
+61                                        Karma_Police                        OK Computer
+62                                        No_Surprises                        OK Computer
+63                                           Palo Alto                        OK Computer
+64                                          A Reminder                        OK Computer
+65                                              Airbag                        OK Computer
+66                               Climbing Up the Walls                        OK Computer
+67                                      Electioneering                        OK Computer
+68                                          Exit Music                        OK Computer
+69                                      Fitter Happier                        OK Computer
+70                              How I Made My Millions                        OK Computer
+71                                        Karma Police                        OK Computer
+72                                            Let Down                        OK Computer
+73                                               Lucky                        OK Computer
+74                                                Lull                        OK Computer
+75                                Meeting in the Aisle                        OK Computer
+76                                           Melatonin                        OK Computer
+77                                        No Surprises                        OK Computer
+78                                         OK Computer                        OK Computer
+79                                           OKコンピューター                        OK Computer
+80                                    Paranoid Android                        OK Computer
+81                                             Pearly*                        OK Computer
+82                                        Polyethylene                        OK Computer
+83                         Subterranean Homesick Alien                        OK Computer
+84                                         The Tourist                        OK Computer
+85                                         Just_(song)                          The Bends
+86                                        High_and_Dry                          The Bends
+87                                        My_Iron_Lung                          The Bends
+88                            Street_Spirit_(Fade_Out)                          The Bends
+89                                        Planet_Telex                          The Bends
+90                                  Fake_Plastic_Trees                          The Bends
+91                                               Lewis                          The Bends
+92                                            Molasses                          The Bends
+93                                          Banana Co.                          The Bends
+94                                      Bishop's Robes                          The Bends
+95                                          Black Star                          The Bends
+96                                               Bones                          The Bends
+97                          Bullet Proof..I Wish I Was                          The Bends
+98                                  Fake Plastic Trees                          The Bends
+99                                        High and Dry                          The Bends
+100                               How Can You Be Sure?                          The Bends
+101                                       India Rubber                          The Bends
+102                                               Just                          The Bends
+103                                        Killer Cars                          The Bends
+104                                    Lozenge of Love                          The Bends
+105                                        Maquiladora                          The Bends
+106                                       My Iron Lung                          The Bends
+107                                 Permanent Daylight                          The Bends
+108                      Punchdrunk Lovesick Singalong                          The Bends
+109                                      Street Spirit                          The Bends
+110                                               Sulk                          The Bends
+111                                     Talk Show Host                          The Bends
+112                                          The Bends                          The Bends
+113                                      The Trickster                          The Bends
+114                   You Never Wash Up After Yourself                          The Bends
+115                                         Knives_Out                           Amnesiac
+116                                       Pyramid_Song                           Amnesiac
+117                                   I_Might_Be_Wrong                           Amnesiac
+118                                           Amnesiac                           Amnesiac
+119                                           Cuttooth                           Amnesiac
+120                                    Dollars & Cents                           Amnesiac
+121                                  Dollars and Cents                           Amnesiac
+122                                          FastTrack                           Amnesiac
+123                                                Fog                           Amnesiac
+124                                      Hunting Bears                           Amnesiac
+125                                   I Might Be Wrong                           Amnesiac
+126                                            Kinetic                           Amnesiac
+127                                         Knives Out                           Amnesiac
+128                               Life in a Glasshouse                           Amnesiac
+129                               Like Spinning Plates                           Amnesiac
+130                              Morning Bell/Amnesiac                           Amnesiac
+131            Packt Like Sardines in a Crushd Tin Box                           Amnesiac
+132                          Pulk/Pull Revolving Doors                           Amnesiac
+133                     Push Pulk/Like Spinning Plates                           Amnesiac
+134                                       Pyramid Song                           Amnesiac
+135                         The Amazing Sounds of Orgy                           Amnesiac
+136                                TransAtlantic Drawl                           Amnesiac
+137                                          Worrywort                           Amnesiac
+138                                You and Whose Army?                           Amnesiac
+139                                                  2                  Hail to the Thief
+140                                        Go_to_Sleep                  Hail to the Thief
+141                                        There_there                  Hail to the Thief
+142                                                Fog                  Hail to the Thief
+143                            A Punchup at a Wedding.                  Hail to the Thief
+144                                A Wolf at the Door.                  Hail to the Thief
+145                                        Backdrifts.                  Hail to the Thief
+146                                      Gagging Order                  Hail to the Thief
+147                                        Go to Sleep                  Hail to the Thief
+148                                I Am Citizen Insane                  Hail to the Thief
+149                                I Am a Wicked Child                  Hail to the Thief
+150                                             I Will                  Hail to the Thief
+151                                            I will.                  Hail to the Thief
+152                                       Myxomatosis.                  Hail to the Thief
+153                                    Paperbag Writer                  Hail to the Thief
+154                                      Remyxomatosis                  Hail to the Thief
+155                                   Sail to the Moon                  Hail to the Thief
+156                                  Sail to the Moon.                  Hail to the Thief
+157                                      Scatterbrain.                  Hail to the Thief
+158                                 Sit Down. Stand Up                  Hail to the Thief
+159                                Sit down. Stand up.                  Hail to the Thief
+160                                         Skttrbrain                  Hail to the Thief
+161                                      The Gloaming.                  Hail to the Thief
+162                                        There There                  Hail to the Thief
+163                               We suck Young Blood.                  Hail to the Thief
+164                                Where Bluebirds Fly                  Hail to the Thief
+165                          Where I End and You Begin                  Hail to the Thief
+166                         Where I End and You Begin.                  Hail to the Thief
+167                    Burn_the_Witch_(Radiohead_song)                 A Moon Shaped Pool
+168                             True_Love_Waits_(song)                 A Moon Shaped Pool
+169                       Daydreaming_(Radiohead_song)                 A Moon Shaped Pool
+170                                            Spectre                 A Moon Shaped Pool
+171                                      Present Tense                 A Moon Shaped Pool
+172                                           Ill Wind                 A Moon Shaped Pool
+173                                        The Numbers                 A Moon Shaped Pool
+174                                          Identikit                 A Moon Shaped Pool
+175  Tinker Tailor Soldier Sailor Rich Man Poor Man...                 A Moon Shaped Pool
+176                                 A Moon Shaped Pool                 A Moon Shaped Pool
+177                                         Decks Dark                 A Moon Shaped Pool
+178                                 Desert Island Disk                 A Moon Shaped Pool
+179                                           Ful Stop                 A Moon Shaped Pool
+180                                         Glass Eyes                 A Moon Shaped Pool
+181                                Lotus_Flower_(song)                  The King of Limbs
+182                                              Bloom                  The King of Limbs
+183                                   Little by Little                  The King of Limbs
+184                                              Feral                  The King of Limbs
+185                                              Codex                  The King of Limbs
+186                                  Give Up the Ghost                  The King of Limbs
+187                                  Morning Mr Magpie                  The King of Limbs
+188                                          Separator                  The King of Limbs
+189                                          Idioteque  I Might Be Wrong: Live Recordings
+190                      Everything_in_Its_Right_Place  I Might Be Wrong: Live Recordings
+191                         The_National_Anthem_(song)  I Might Be Wrong: Live Recordings
+192                             True_Love_Waits_(song)  I Might Be Wrong: Live Recordings
+193                                   I_Might_Be_Wrong  I Might Be Wrong: Live Recordings
+194                                  Dollars and Cents  I Might Be Wrong: Live Recordings
+195                               Like Spinning Plates  I Might Be Wrong: Live Recordings
+196                                       Morning Bell  I Might Be Wrong: Live Recordings
+197                                              Bloom                   TKOL RMX 1234567
+198                                   Little by Little                   TKOL RMX 1234567
+199                                       Lotus Flower                   TKOL RMX 1234567
+200                                              Feral                   TKOL RMX 1234567
+201                                              Codex                   TKOL RMX 1234567
+202                                  Give Up the Ghost                   TKOL RMX 1234567
+203                                  Morning Mr Magpie                   TKOL RMX 1234567
+204                                          Separator                   TKOL RMX 1234567
+205                            Good Evening Mrs Magpie                   TKOL RMX 1234567
+206                                               TKOL                   TKOL RMX 1234567
+207                                                  4                        In Rainbows
+208                                                 15                        In Rainbows
+209                          Jigsaw_Falling_into_Place                        In Rainbows
+210                               Bodysnatchers_(song)                        In Rainbows
+211                                           Reckoner                        In Rainbows
+212                        All_I_Need_(Radiohead_song)                        In Rainbows
+213                                        Nude_(song)                        In Rainbows
+214                    House_of_Cards_(Radiohead_song)                        In Rainbows
+215                                          Videotape                        In Rainbows
+216                                               MK 2                        In Rainbows
+217                                     Bangers + Mash                        In Rainbows
+218                                 Down Is the New Up                        In Rainbows
+219                                          Faust Arp                        In Rainbows
+220                                          Go Slowly                        In Rainbows
+221                                       Last Flowers                        In Rainbows
+222                                               MK 1                        In Rainbows
+223                                   Up on the Ladder                        In Rainbows
+224                               Weird Fishes/Arpeggi                        In Rainbows
+225                                                  4                 In Rainbows Disk 2
+226                                                 15                 In Rainbows Disk 2
+227                          Jigsaw_Falling_into_Place                 In Rainbows Disk 2
+228                               Bodysnatchers_(song)                 In Rainbows Disk 2
+229                                           Reckoner                 In Rainbows Disk 2
+230                        All_I_Need_(Radiohead_song)                 In Rainbows Disk 2
+231                                        Nude_(song)                 In Rainbows Disk 2
+232                    House_of_Cards_(Radiohead_song)                 In Rainbows Disk 2
+233                                          Videotape                 In Rainbows Disk 2
+234                                               MK 2                 In Rainbows Disk 2
+235                                     Bangers + Mash                 In Rainbows Disk 2
+236                                 Down Is the New Up                 In Rainbows Disk 2
+237                                          Faust Arp                 In Rainbows Disk 2
+238                                          Go Slowly                 In Rainbows Disk 2
+239                                       Last Flowers                 In Rainbows Disk 2
+240                                               MK 1                 In Rainbows Disk 2
+241                                   Up on the Ladder                 In Rainbows Disk 2
+242                               Weird Fishes/Arpeggi                 In Rainbows Disk 2

@@ -129,7 +129,7 @@ def print_musicAlbum(results, target, metadata=None):
     df = df.reindex(columns=["Music","Album"])
     print >> f, df.to_string().encode('utf-8')
     print(df.to_string().encode('utf-8'))
-
+    #print(df)
 
 if __name__ == "__main__":
    

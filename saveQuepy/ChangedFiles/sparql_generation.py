@@ -52,20 +52,30 @@ def expression_to_sparql(e, full):
     y = 0
     xs = []
     count=0
+    xCount = 0
     for x in e:
         for node in x.iter_nodes():
             for relation, dest in x.iter_edges(node):
-                if relation is IsRelatedTo:
-                    relation = u"?y{}".format(y)
-                    y += 1
-                if ((type(dest) is int) and (len(e)>1)):
-                    xs.append(triple(adapt(node), relation, adapt(dest+count),indentation=1))
-                    count+=1
-                else:
-                    xs.append(triple(adapt(node), relation, adapt(dest),indentation=1))
+                if(count<3):
+                    if relation is IsRelatedTo:
+                        relation = u"?y{}".format(y)
+                        xs.append("1")
+                        print("Entrou")
+                        y += 1
+                    if ((type(dest) is int) and (len(e)>1)):
+                        xs.append(triple(adapt(node), relation, adapt(dest+xCount),indentation=1))
+                        #xs.append("2 - " + dest.__str__() + count.__str__())
+                        count+=1
+                        if(dest!=0):
+                            xCount+=1
+                    else:
+                        xs.append(triple(adapt(node), relation, adapt(dest),indentation=1))
+                        #xs.append("3 - " + dest.__str__() )
+
     sparql = template.format(preamble=settings.SPARQL_PREAMBLE,
                              select=select,
                              expression=u"\n".join(xs))
+                    
     #sys.exit(1)
     return select, sparql
 
